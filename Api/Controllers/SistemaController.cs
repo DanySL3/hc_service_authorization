@@ -10,7 +10,7 @@ namespace Api.Controllers
 {
     [Route("api/authorization/")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
 
     public class SistemaController : ControllerBase
     {

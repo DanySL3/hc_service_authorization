@@ -11,7 +11,7 @@ namespace Api.Controllers
 {
     [Route("api/authorization/")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
 
     public class UsuarioController : ControllerBase
     {
@@ -34,7 +34,6 @@ namespace Api.Controllers
 
         [HttpPost]
         [Route("registrar-usuario")]
-        [Authorize]
 
         public async Task<IActionResult> registrarUsuario([FromBody] RegistrarUsuarioAdapter objModel)
         {
@@ -63,7 +62,6 @@ namespace Api.Controllers
 
         [HttpDelete]
         [Route("eliminar-usuario")]
-        [Authorize]
 
         public async Task<IActionResult> eliminarUsuario([FromQuery] int usuario_id)
         {
@@ -92,7 +90,6 @@ namespace Api.Controllers
 
         [HttpPut]
         [Route("actualizar-usuario")]
-        [Authorize]
 
         public async Task<IActionResult> actualizarUsuario([FromBody] ActualizarUsuarioAdapter objModel)
         {
@@ -121,7 +118,6 @@ namespace Api.Controllers
 
         [HttpGet]
         [Route("listar-usuarios")]
-        [Authorize]
 
         public async Task<IActionResult> listarUsuarios([FromQuery] int sistema_id = 0)
         {
@@ -148,7 +144,6 @@ namespace Api.Controllers
 
         [HttpGet]
         [Route("buscar-usuarios")]
-        //[Authorize]
 
         public async Task<IActionResult> buscarUsuario([FromQuery] int usuario_id = 0, [FromQuery] string documento_numero = "")
         {
@@ -175,7 +170,6 @@ namespace Api.Controllers
 
         [HttpPut]
         [Route("resetear-contrasenia")]
-        [Authorize]
 
         public async Task<IActionResult> resetearContrasenia([FromQuery] int usuario_id)
         {
@@ -204,7 +198,6 @@ namespace Api.Controllers
 
         [HttpPut]
         [Route("actualizar-contrasenia")]
-        [Authorize]
 
         public async Task<IActionResult> cambiarContrasenia([FromBody] ActualizarContraseniaAdapter objModel)
         {
@@ -234,7 +227,6 @@ namespace Api.Controllers
 
         [HttpPost]
         [Route("guardar-privilegios")]
-        [Authorize]
 
         public async Task<IActionResult> registrarPrivilegios([FromBody] RegistrarPrivilegiosAdapter objModel)
         {
@@ -263,7 +255,6 @@ namespace Api.Controllers
 
         [HttpGet]
         [Route("listar-privilegios")]
-        [Authorize]
 
         public async Task<IActionResult> listarPrivilegios([FromQuery] int sistema_id = 0,
                                                            [FromQuery] int usuario_id = 0,
@@ -292,7 +283,6 @@ namespace Api.Controllers
 
         [HttpDelete]
         [Route("eliminar-privilegios")]
-        [Authorize]
 
         public async Task<IActionResult> actualizarPrivilegios([FromQuery] int sistema_id, [FromQuery] int perfil_id, [FromQuery] int usuario_id)
         {
@@ -321,7 +311,6 @@ namespace Api.Controllers
 
         [HttpGet]
         [Route("listar-cargos")]
-        //[Authorize]
 
         public async Task<IActionResult> listarCargos()
         {
@@ -348,7 +337,6 @@ namespace Api.Controllers
 
         [HttpPut]
         [Route("suspender-usuario")]
-        [Authorize]
 
         public async Task<IActionResult> suspenderUsuario([FromQuery] int usuario_id)
         {
@@ -377,7 +365,6 @@ namespace Api.Controllers
 
         [HttpPut]
         [Route("activar-usuario")]
-        [Authorize]
 
         public async Task<IActionResult> activarUsuario([FromQuery] int usuario_id)
         {

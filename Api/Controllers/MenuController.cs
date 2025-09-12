@@ -91,7 +91,7 @@ namespace Api.Controllers
 
         [HttpGet]
         [Route("consultar-menus-perfil")]
-        //[Authorize]
+        [Authorize]
 
         public async Task<IActionResult> ObtenerMenuSistema([FromQuery] int sistema_id, [FromQuery] int perfil_id)
         {
