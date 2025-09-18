@@ -69,7 +69,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                 {
                     var inner = ex.InnerException?.InnerException?.Message ?? ex.InnerException?.Message ?? "";
 
-                    var ruta = Regex.Match(ex.StackTrace ?? "", @"([^\\]+\.cs):line \d+");
+                    var ruta = Regex.Match(ex.StackTrace ?? "", @"([^\\/]+\.cs):line \d+");
 
                     var archivo = ruta.Success ? ruta.Value : "Sin ubicación";
 
@@ -111,7 +111,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                 {
                     var inner = ex.InnerException?.InnerException?.Message ?? ex.InnerException?.Message ?? "";
 
-                    var ruta = Regex.Match(ex.StackTrace ?? "", @"([^\\]+\.cs):line \d+");
+                    var ruta = Regex.Match(ex.StackTrace ?? "", @"([^\\/]+\.cs):line \d+");
 
                     var archivo = ruta.Success ? ruta.Value : "Sin ubicación";
 
@@ -145,7 +145,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                 {
                     var inner = ex.InnerException?.InnerException?.Message ?? ex.InnerException?.Message ?? "";
 
-                    var ruta = Regex.Match(ex.StackTrace ?? "", @"([^\\]+\.cs):line \d+");
+                    var ruta = Regex.Match(ex.StackTrace ?? "", @"([^\\/]+\.cs):line \d+");
 
                     var archivo = ruta.Success ? ruta.Value : "Sin ubicación";
 
@@ -238,7 +238,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                 {
                     var inner = ex.InnerException?.InnerException?.Message ?? ex.InnerException?.Message ?? "";
 
-                    var ruta = Regex.Match(ex.StackTrace ?? "", @"([^\\]+\.cs):line \d+");
+                    var ruta = Regex.Match(ex.StackTrace ?? "", @"([^\\/]+\.cs):line \d+");
 
                     var archivo = ruta.Success ? ruta.Value : "Sin ubicación";
 
@@ -293,7 +293,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                 {
                     var inner = ex.InnerException?.InnerException?.Message ?? ex.InnerException?.Message ?? "";
 
-                    var ruta = Regex.Match(ex.StackTrace ?? "", @"([^\\]+\.cs):line \d+");
+                    var ruta = Regex.Match(ex.StackTrace ?? "", @"([^\\/]+\.cs):line \d+");
 
                     var archivo = ruta.Success ? ruta.Value : "Sin ubicación";
 
@@ -327,7 +327,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                 {
                     var inner = ex.InnerException?.InnerException?.Message ?? ex.InnerException?.Message ?? "";
 
-                    var ruta = Regex.Match(ex.StackTrace ?? "", @"([^\\]+\.cs):line \d+");
+                    var ruta = Regex.Match(ex.StackTrace ?? "", @"([^\\/]+\.cs):line \d+");
 
                     var archivo = ruta.Success ? ruta.Value : "Sin ubicación";
 
@@ -361,7 +361,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                 {
                     var inner = ex.InnerException?.InnerException?.Message ?? ex.InnerException?.Message ?? "";
 
-                    var ruta = Regex.Match(ex.StackTrace ?? "", @"([^\\]+\.cs):line \d+");
+                    var ruta = Regex.Match(ex.StackTrace ?? "", @"([^\\/]+\.cs):line \d+");
 
                     var archivo = ruta.Success ? ruta.Value : "Sin ubicación";
 
@@ -395,7 +395,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                 {
                     var inner = ex.InnerException?.InnerException?.Message ?? ex.InnerException?.Message ?? "";
 
-                    var ruta = Regex.Match(ex.StackTrace ?? "", @"([^\\]+\.cs):line \d+");
+                    var ruta = Regex.Match(ex.StackTrace ?? "", @"([^\\/]+\.cs):line \d+");
 
                     var archivo = ruta.Success ? ruta.Value : "Sin ubicación";
 
@@ -433,7 +433,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                 {
                     var inner = ex.InnerException?.InnerException?.Message ?? ex.InnerException?.Message ?? "";
 
-                    var ruta = Regex.Match(ex.StackTrace ?? "", @"([^\\]+\.cs):line \d+");
+                    var ruta = Regex.Match(ex.StackTrace ?? "", @"([^\\/]+\.cs):line \d+");
 
                     var archivo = ruta.Success ? ruta.Value : "Sin ubicación";
 
