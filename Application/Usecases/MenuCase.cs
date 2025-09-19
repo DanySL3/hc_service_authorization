@@ -30,16 +30,13 @@ namespace Application.Usecases
 
             var lstErrores = new List<FieldResponse>();
 
-            if (sistema_id < 0)
-                lstErrores.Add(new FieldResponse() { Code = "1010", Message = MessageException.GetErrorByCode(1010, "id de sistema"), Field = "sistema_id" });
-
             if (lstErrores.Any())
                 return objResponseHelper.errorList(lstErrores);
 
 
             //ejecución de petición
 
-            var datos = await menuGettingInfrastructure.obtenerMenuUsuario(perfil_id, sistema_id, sistema_codigo);
+            var datos = await menuGettingInfrastructure.obtenerMenuUsuario(perfil_id, sistema_codigo);
 
             if (datos.Count == 0)
                 return objResponseHelper.emptyResponse();
