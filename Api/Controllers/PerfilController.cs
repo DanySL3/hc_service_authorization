@@ -33,7 +33,7 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        [Route("consultar-perfiles-acceso")]
+        [Route("listar-perfiles-usuario")]
 
         public async Task<IActionResult> ObtenerPerfilUsuario()
         {
