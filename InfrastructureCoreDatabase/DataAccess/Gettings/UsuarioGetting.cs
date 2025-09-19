@@ -68,7 +68,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
             return datos;
         }
 
-        public async Task<List<ListaPrivilegiosEntity>> listarPrivilegios(int sistema_id, int usuario_id, string documento_numero)
+        public async Task<List<ListaPrivilegiosEntity>> listarAccesos(int sistema_id, int usuario_id, string documento_numero)
         {
             var accesos = await db.Database.SqlQuery<ListaPrivilegiosEntity>(
                 $"""
@@ -104,7 +104,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
             return accesos;
         }
 
-        public async Task<List<ListarUsuarioEntity>> listarUsuarios(int sistema_id)
+        public async Task<List<ListarUsuarioEntity>> listarUsuarios()
         {
             var usuarios = await db.Database.SqlQuery<ListarUsuarioEntity>(
                 $"""

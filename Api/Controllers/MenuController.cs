@@ -32,37 +32,10 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        [Route("consultar-menus-externos")]
-
-        public async Task<IActionResult> ObtenerMenuExternos()
-        {
-            try
-            {
-                var dataResponse = await objMenuApplication.obtenerMenuExternos();
-
-                return StatusCode(200, dataResponse);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError($"{HttpContext.Request.Path}: [error] {ex.Message}");
-
-
-                if (lDevelopment)
-                {
-                    return StatusCode(500, objResponseApp.errorSimpleServidor("2000", MessageException.GetErrorByCode(2000, ex.Message)));
-                }
-                else
-                {
-                    return StatusCode(500, objResponseApp.errorSimpleServidor("2000", MessageException.GetErrorByCode(500)));
-                }
-            }
-        }
-
-        [HttpGet]
         [Route("consultar-menus-usuario")]
         [Authorize]
 
-        public async Task<IActionResult> ObtenerMenuUsuario([FromQuery] int sistema_id = 0)
+        public async Task<IActionResult> ObtenerMenuUsuario()
         {
             try
             {
@@ -70,7 +43,7 @@ namespace Api.Controllers
 
                 int sistema_codigo = Convert.ToInt32(User.FindFirstValue("sistema_codigo"));
 
-                var dataResponse = await objMenuApplication.obtenerMenuUsuario(perfil_id, sistema_id, sistema_codigo);
+                var dataResponse = await objMenuApplication.obtenerMenuUsuario(perfil_id, sistema_codigo);
 
                 return StatusCode(200, dataResponse);
             }
@@ -104,7 +77,6 @@ namespace Api.Controllers
             catch (Exception ex)
             {
                 logger.LogError($"{HttpContext.Request.Path}: [error] {ex.Message}");
-
 
                 if (lDevelopment)
                 {

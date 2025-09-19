@@ -9,8 +9,6 @@ public partial class Usuario
 
     public int DocumentoTipoId { get; set; }
 
-    public int? PersonaId { get; set; }
-
     public int UsuarioEstadoId { get; set; }
 
     public string Nombre { get; set; } = null!;

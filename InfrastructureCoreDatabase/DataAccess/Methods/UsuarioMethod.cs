@@ -4,6 +4,7 @@ using Domain.Enums;
 using Domain.Interfaces;
 using InfrastructureCoreDatabase.EntityFramework.Tables;
 using Microsoft.EntityFrameworkCore;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -28,7 +29,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
             objHelperCommon = _objHelperCommon;
         }
 
-        public async Task<TransaccionEntity> actualizarUsuario(int cargo_id, string nombre, string documento_numero, string correo, string usuario, int usuario_id, int usuario_modifica_id)
+        public async Task<TransaccionEntity> actualizarUsuario(int cargo_id, string nombre, string documento_numero, string correo, string usuario, int usuario_id, List<int> agencia_ids, int usuario_modifica_id)
         {
             using (var dbTransactionScope = new TransactionScope(TransactionScopeOption.Required,
                                            new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))
@@ -46,18 +47,51 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                     if (usuarioDB == null) return new TransaccionEntity { Code = false, ID = 0, Message = "no hay datos con el identificador de usuario" };
 
                     usuarioDB.Nombre = nombre;
-                    usuarioDB.DocumentoTipoId = (int)documentoTipoEnum.DNI;
                     usuarioDB.DocumentoNumero = documento_numero;
                     usuarioDB.Correo = correo;
                     usuarioDB.Usuario1 = usuario;
-                    usuarioDB.Usermodifiedid = usuario_id;
+                    usuarioDB.Usermodifiedid = usuario_modifica_id;
                     usuarioDB.Updatedat = DateTime.Now;
+
+                    //cargo
 
                     var cargo = db.CargoUsuarios.Where(x => x.UsuarioId == usuario_id).FirstOrDefault();
 
                     cargo.CargoId = cargo_id;
-                    cargo.Usermodifiedid = usuario_id;
+                    cargo.Usermodifiedid = usuario_modifica_id;
                     cargo.Updatedat = DateTime.Now;
+
+                    //agencia
+
+                    db.AgenciaUsuarios
+                       .Where(a => a.Isactive == true && a.UsuarioId == usuario_id)
+                       .ExecuteUpdate(setters => setters
+                           .SetProperty(p => p.Isactive, false)
+                           .SetProperty(p => p.Usermodifiedid, usuario_modifica_id)
+                           .SetProperty(p => p.Updatedat, DateTime.Now)
+                       );
+
+                    foreach (var agencia_id in agencia_ids)
+                    {
+                        var agenciaUsuario = db.AgenciaUsuarios.Where(x => x.AgenciaId == agencia_id && x.UsuarioId == usuario_id).FirstOrDefault();
+
+                        if (agenciaUsuario != null)
+                        {
+                            agenciaUsuario.Updatedat = DateTime.Now;
+                            agenciaUsuario.Usermodifiedid = usuario_modifica_id;
+                            agenciaUsuario.Isactive = true;
+                        }
+                        else
+                        {
+                            var agenciaADD = new AgenciaUsuario();
+
+                            agenciaADD.AgenciaId = agencia_id;
+                            agenciaADD.UsuarioId = usuario_id;
+                            agenciaADD.Usercreatedid = usuario_modifica_id;
+
+                            db.AgenciaUsuarios.Add(agenciaADD);
+                        }
+                    }
 
                     db.SaveChanges();
 
@@ -154,8 +188,8 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
             }
         }
 
-        public async Task<TransaccionEntity> registrarPrivilegios(int sistema_id, int perfil_id, int usuario_id, string fecha_inicio_perfil,
-                                                                  string fecha_fin_perfil, int agencia_id, int usuario_modifica_id)
+        public async Task<TransaccionEntity> registrarAccesos(int sistema_id, int perfil_id, int usuario_id, string fecha_inicio_perfil,
+                                                                  string fecha_fin_perfil, int usuario_modifica_id)
         {
             using (var dbTransactionScope = new TransactionScope(TransactionScopeOption.Required,
                                 new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))
@@ -202,11 +236,8 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                         {
                             SistemaId = sistema_id,
                             PerfilId = perfil_id,
-
                             FechaFin = string.IsNullOrEmpty(fecha_fin_perfil) ? null : DateOnly.ParseExact(fecha_fin_perfil, "yyyy-MM-dd"),
-
                             FechaInicio = string.IsNullOrEmpty(fecha_inicio_perfil) ? DateOnly.FromDateTime(DateTime.Now) : DateOnly.ParseExact(fecha_inicio_perfil, "yyyy-MM-dd"),
-
                             UsuarioId = usuario_id,
                             Usercreatedid = usuario_modifica_id
                         };
@@ -219,11 +250,8 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                         perfilAsignado.Usermodifiedid = usuario_modifica_id;
                         perfilAsignado.PerfilId = perfil_id;
                         perfilAsignado.Updatedat = DateTime.Now;
-
                         perfilAsignado.FechaInicio = string.IsNullOrEmpty(fecha_inicio_perfil) ? DateOnly.FromDateTime(DateTime.Now) : DateOnly.ParseExact(fecha_inicio_perfil, "yyyy-MM-dd");
-
                         perfilAsignado.FechaFin = string.IsNullOrEmpty(fecha_fin_perfil) ? null : DateOnly.ParseExact(fecha_fin_perfil, "yyyy-MM-dd");
-
                         perfilAsignado.Isactive = true;
                     }
                     
@@ -247,7 +275,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
             }
         }
 
-        public async Task<TransaccionEntity> registrarUsuario(int cargo_id, string nombre, string documento_numero, string correo, string usuario, string password, int usuario_id)
+        public async Task<TransaccionEntity> registrarUsuario(int cargo_id, string nombre, string documento_numero, string correo, string usuario, List<int> agencia_ids, string password, int usuario_id)
         {
             using (var dbTransactionScope = new TransactionScope(TransactionScopeOption.Required,
                                                        new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))
@@ -282,6 +310,18 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                     cargo.Usercreatedid = usuario_id;
 
                     db.CargoUsuarios.Add(cargo);
+
+                    //agencias
+
+                    var agenciasByUsuario = agencia_ids.Select(id => new AgenciaUsuario
+                    {
+                        UsuarioId = usuarioDB.Id,
+                        AgenciaId = id,
+                        Usercreatedid = usuario_id
+
+                    }).ToList();
+
+                    db.AgenciaUsuarios.AddRange(agenciasByUsuario);
 
                     db.SaveChanges();
 
@@ -404,7 +444,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
             }
         }
 
-        public async Task<TransaccionEntity> eliminarPrivilegios(int sistema_id, int idPerfil, int usuario_id, int usuario_idModifica)
+        public async Task<TransaccionEntity> eliminarAccesos(int sistema_id, int idPerfil, int usuario_id, int usuario_idModifica)
         {
             using (var dbTransactionScope = new TransactionScope(TransactionScopeOption.Required,
                                            new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))
@@ -415,19 +455,19 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
 
                     if (usuario == null) return new TransaccionEntity { Code = false, ID = 0, Message = "no hay datos con el identificador de usuario" };
 
-                    var perfilByUsuario = db.PerfilUsuarios.Where(x => x.UsuarioId == usuario_id && x.PerfilId == idPerfil && x.SistemaId == sistema_id).FirstOrDefault();
+                    var perfilUsuario = db.PerfilUsuarios.Where(x => x.UsuarioId == usuario_id && x.PerfilId == idPerfil && x.SistemaId == sistema_id).FirstOrDefault();
 
-                    if (perfilByUsuario == null) return new TransaccionEntity { Code = false, ID = 0, Message = "el privilegio a eliminar no existe en el sistema" };
+                    if (perfilUsuario == null) return new TransaccionEntity { Code = false, ID = 0, Message = "el privilegio a eliminar no existe en el sistema" };
 
-                    perfilByUsuario.Isactive = false;
-                    usuario.Usermodifiedid = usuario_idModifica;
-                    usuario.Updatedat = DateTime.Now;
+                    perfilUsuario.Isactive = false;
+                    perfilUsuario.Usermodifiedid = usuario_idModifica;
+                    perfilUsuario.Updatedat = DateTime.Now;
 
                     db.SaveChanges();
 
                     dbTransactionScope.Complete();
 
-                    return new TransaccionEntity { Code = true, ID = usuario.Id, Message = "Los privilegios fuerón eliminados." };
+                    return new TransaccionEntity { Code = true, ID = perfilUsuario.Id, Message = "Los privilegios fuerón eliminados." };
                 }
                 catch (Exception ex)
                 {

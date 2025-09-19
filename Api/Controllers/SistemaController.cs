@@ -31,13 +31,15 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        [Route("listar-sistemas")]
+        [Route("listar-sistema-usuario")]
 
-        public async Task<IActionResult> listarSistemas()
+        public async Task<IActionResult> obtenerAplicacion()
         {
             try
             {
-                var dataResponse = await objSistemaApplication.listarSistemas();
+                int usuario_id = Convert.ToInt32(User.FindFirstValue("usuario_id"));
+
+                var dataResponse = await objSistemaApplication.listarSistemasUsuario(usuario_id);
 
                 return StatusCode(200, dataResponse);
             }
@@ -57,16 +59,15 @@ namespace Api.Controllers
         }
 
 
-        [HttpGet]
-        [Route("listar-sistema-usuario")]
 
-        public async Task<IActionResult> obtenerAplicacion()
+        [HttpGet]
+        [Route("listar-sistemas")]
+
+        public async Task<IActionResult> listarSistemas()
         {
             try
             {
-                int usuario_id = Convert.ToInt32(User.FindFirstValue("usuario_id"));
-
-                var dataResponse = await objSistemaApplication.listarSistemasUsuario(usuario_id);
+                var dataResponse = await objSistemaApplication.listarSistemas();
 
                 return StatusCode(200, dataResponse);
             }

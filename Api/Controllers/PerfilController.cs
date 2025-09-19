@@ -33,33 +33,6 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        [Route("listar-perfiles")]
-
-        public async Task<IActionResult> listarPerfiles()
-        {
-            try
-            {
-                var dataResponse = await objPerfilApplication.listarPerfiles();
-
-                return StatusCode(200, dataResponse);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError($"{HttpContext.Request.Path}: [error] {ex.Message}");
-
-
-                if (lDevelopment)
-                {
-                    return StatusCode(500, objResponseApp.errorSimpleServidor("2000", MessageException.GetErrorByCode(2000, ex.Message)));
-                }
-                else
-                {
-                    return StatusCode(500, objResponseApp.errorSimpleServidor("2000", MessageException.GetErrorByCode(500)));
-                }
-            }
-        }
-
-        [HttpGet]
         [Route("listar-perfiles-no-asignados")]
 
         public async Task<IActionResult> ObtenerPerfilNoAsginado([FromQuery] int sistema_id, [FromQuery] int usuario_id)
@@ -116,6 +89,67 @@ namespace Api.Controllers
                 }
             }
         }
+
+
+
+
+
+        [HttpPost]
+        [Route("registrar-perfil-menus")]
+
+        public async Task<IActionResult> registrarPrivilegios([FromBody] RegistrarPrivilegiosPerfilAdapter objModel)
+        {
+            try
+            {
+                int usuario_id = Convert.ToInt32(User.FindFirstValue("usuario_id"));
+
+                var dataResponse = await objPerfilApplication.registrarPrivilegios(objModel, usuario_id);
+
+                return StatusCode(200, dataResponse);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"{HttpContext.Request.Path}: [error] {ex.Message}");
+
+                if (lDevelopment)
+                {
+                    return StatusCode(500, objResponseApp.errorSimpleServidor("2000", MessageException.GetErrorByCode(2000, ex.Message)));
+                }
+                else
+                {
+                    return StatusCode(500, objResponseApp.errorSimpleServidor("2000", MessageException.GetErrorByCode(500)));
+                }
+            }
+        }
+
+
+        [HttpGet]
+        [Route("listar-perfiles")]
+
+        public async Task<IActionResult> listarPerfiles()
+        {
+            try
+            {
+                var dataResponse = await objPerfilApplication.listarPerfiles();
+
+                return StatusCode(200, dataResponse);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"{HttpContext.Request.Path}: [error] {ex.Message}");
+
+
+                if (lDevelopment)
+                {
+                    return StatusCode(500, objResponseApp.errorSimpleServidor("2000", MessageException.GetErrorByCode(2000, ex.Message)));
+                }
+                else
+                {
+                    return StatusCode(500, objResponseApp.errorSimpleServidor("2000", MessageException.GetErrorByCode(500)));
+                }
+            }
+        }
+
 
         [HttpPost]
         [Route("registrar-perfil")]
@@ -183,34 +217,6 @@ namespace Api.Controllers
                 int usuario_id = Convert.ToInt32(User.FindFirstValue("usuario_id"));
 
                 var dataResponse = await objPerfilApplication.eliminarPerfil(perfil_id, usuario_id);
-
-                return StatusCode(200, dataResponse);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError($"{HttpContext.Request.Path}: [error] {ex.Message}");
-
-                if (lDevelopment)
-                {
-                    return StatusCode(500, objResponseApp.errorSimpleServidor("2000", MessageException.GetErrorByCode(2000, ex.Message)));
-                }
-                else
-                {
-                    return StatusCode(500, objResponseApp.errorSimpleServidor("2000", MessageException.GetErrorByCode(500)));
-                }
-            }
-        }
-
-        [HttpPost]
-        [Route("registrar-privilegios-perfil")]
-
-        public async Task<IActionResult> registrarPrivilegios([FromBody] RegistrarPrivilegiosPerfilAdapter objModel)
-        {
-            try
-            {
-                int usuario_id = Convert.ToInt32(User.FindFirstValue("usuario_id"));
-
-                var dataResponse = await objPerfilApplication.registrarPrivilegios(objModel, usuario_id);
 
                 return StatusCode(200, dataResponse);
             }

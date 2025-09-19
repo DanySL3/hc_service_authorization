@@ -24,7 +24,7 @@ namespace Application.Usecases
             objResponseHelper = new ResponseHelper();
         }
 
-        public async Task<DataResponse> obtenerMenuUsuario(int perfil_id, int sistema_id, int sistema_codigo)
+        public async Task<DataResponse> obtenerMenuUsuario(int perfil_id, int sistema_codigo)
         {
             //validación de campos
 

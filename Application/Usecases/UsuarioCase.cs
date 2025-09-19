@@ -49,7 +49,7 @@ namespace Application.Usecases
             //ejecución de petición
 
             var datos = await objUsuarioInfrastructure.actualizarUsuario(objModel.cargo_id, objModel.nombre, objModel.documento_numero, objModel.correo, objModel.usuario,
-                                                                         objModel.usuario_id, usuario_id);
+                                                                         objModel.usuario_id, objModel.agencia_ids, usuario_id);
 
             if (datos.Code == false)
                 return objResponseHelper.errorSimpleClient("2001", MessageException.GetErrorByCode(2001, datos.Message));
@@ -83,7 +83,7 @@ namespace Application.Usecases
         }
 
 
-        public async Task<DataResponse> registrarPrivilegios(RegistrarPrivilegiosAdapter objModel, int usuario_id)
+        public async Task<DataResponse> registrarAccesos(RegistrarAccesosAdapter objModel, int usuario_id)
         {
             //validación de campos
 
@@ -96,9 +96,8 @@ namespace Application.Usecases
 
             //ejecución de petición
 
-            var datos = await objUsuarioInfrastructure.registrarPrivilegios(objModel.sistema_id, objModel.perfil_id, objModel.usuario_id,
-                                                                            objModel.fecha_inicio_perfil, objModel.fecha_fin_perfil,
-                                                                            objModel.agencia_id, usuario_id);
+            var datos = await objUsuarioInfrastructure.registrarAccesos(objModel.sistema_id, objModel.perfil_id, objModel.usuario_id,
+                                                                            objModel.fecha_inicio_perfil, objModel.fecha_fin_perfil, usuario_id);
 
             if (datos.Code == false)
                 return objResponseHelper.errorSimpleClient("2001", MessageException.GetErrorByCode(2001, datos.Message));
@@ -133,7 +132,7 @@ namespace Application.Usecases
 
             //ejecución de petición
 
-            var datos = await objUsuarioInfrastructure.registrarUsuario(objModel.cargo_id, objModel.nombre, objModel.documento_numero, objModel.correo, objModel.usuario,
+            var datos = await objUsuarioInfrastructure.registrarUsuario(objModel.cargo_id, objModel.nombre, objModel.documento_numero, objModel.correo, objModel.usuario, objModel.agencia_ids,
                                                                         password, usuario_id);
 
             if (datos.Code == false)
@@ -189,7 +188,7 @@ namespace Application.Usecases
         }
 
 
-        public async Task<DataResponse> listarPrivilegios(int sistema_id, int usuario_id, string documento_numero)
+        public async Task<DataResponse> listarAccesos(int sistema_id, int usuario_id, string documento_numero)
         {
             //validación de campos
 
@@ -203,7 +202,7 @@ namespace Application.Usecases
 
             //ejecución de petición
 
-            var datos = await objUsuarioGettingInfrastructure.listarPrivilegios(sistema_id, usuario_id, documento_numero);
+            var datos = await objUsuarioGettingInfrastructure.listarAccesos(sistema_id, usuario_id, documento_numero);
 
             if (datos.Count == 0)
                 return objResponseHelper.emptyResponse();
@@ -211,11 +210,11 @@ namespace Application.Usecases
             return objResponseHelper.successResponse(datos);
         }
 
-        public async Task<DataResponse> listarUsuarios(int sistema_id)
+        public async Task<DataResponse> listarUsuarios()
         {
             //ejecución de petición
 
-            var datos = await objUsuarioGettingInfrastructure.listarUsuarios(sistema_id);
+            var datos = await objUsuarioGettingInfrastructure.listarUsuarios();
 
             if (datos.Count == 0)
                 return objResponseHelper.emptyResponse();
@@ -280,7 +279,7 @@ namespace Application.Usecases
             return objResponseHelper.successResponse(datos);
         }
 
-        public async Task<DataResponse> eliminarPrivilegios(int sistema_id, int perfil_id, int usuario_id, int usuario_modifica_id)
+        public async Task<DataResponse> eliminarAccesos(int sistema_id, int perfil_id, int usuario_id, int usuario_modifica_id)
         {
             //validación de campos
 
@@ -300,7 +299,7 @@ namespace Application.Usecases
 
             //ejecución de petición
 
-            var datos = await objUsuarioInfrastructure.eliminarPrivilegios(sistema_id, perfil_id, usuario_id, usuario_modifica_id);
+            var datos = await objUsuarioInfrastructure.eliminarAccesos(sistema_id, perfil_id, usuario_id, usuario_modifica_id);
 
             if (datos.Code == false)
                 return objResponseHelper.errorSimpleClient("2001", MessageException.GetErrorByCode(2001, datos.Message));

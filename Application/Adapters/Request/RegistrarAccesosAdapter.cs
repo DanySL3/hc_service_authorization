@@ -9,18 +9,18 @@ using System.Threading.Tasks;
 
 namespace Application.Adapters.Request
 {
-    public class RegistrarPrivilegiosAdapter
+    public class RegistrarAccesosAdapter
     {
+        public int usuario_id { get; set; }
+
         public int sistema_id {  get; set; }
         public int perfil_id { get; set; }
-        public int usuario_id {  get; set; }
-        public int agencia_id { get; set; }
         public string? fecha_inicio_perfil { get; set; }
-        public string? fecha_fin_perfil { get; set; } 
+        public string? fecha_fin_perfil { get; set; }
     }
 }
 
-public class RegistrarPrivilegiosValidator : AbstractValidator<RegistrarPrivilegiosAdapter>
+public class RegistrarPrivilegiosValidator : AbstractValidator<RegistrarAccesosAdapter>
 {
     public RegistrarPrivilegiosValidator()
     {

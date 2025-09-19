@@ -24,22 +24,11 @@ namespace Application.Usecases
             objResponseHelper = new ResponseHelper();
         }
 
-        public async Task<DataResponse> obtenerAgencia(int usuario_id, int sistema_id)
+        public async Task<DataResponse> obtenerAgencia(int usuario_id, int sistema_codigo)
         {
-            //validación de campos
-
-            var lstErrores = new List<FieldResponse>();
-
-            if (sistema_id < 0)
-                lstErrores.Add(new FieldResponse() { Code = "10010", Message = MessageException.GetErrorByCode(10010, "id de sistema"), Field = "sistema_id" });
-
-            if (lstErrores.Any())
-                return objResponseHelper.errorList(lstErrores);
-
-
             //ejecución de petición
 
-            var datos = await objAgenciaGettingInfrastructure.obtenerAgencia(usuario_id, sistema_id);
+            var datos = await objAgenciaGettingInfrastructure.obtenerAgencia(usuario_id, sistema_codigo);
 
             if (datos.Count == 0)
                 return objResponseHelper.emptyResponse();

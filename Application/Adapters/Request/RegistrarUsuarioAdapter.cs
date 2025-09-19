@@ -12,6 +12,8 @@ namespace Application.Adapters.Request
     {
         public int cargo_id {  get; set; }
 
+        public List<int> agencia_ids { get; set; }
+
         public string nombre {  get; set; }
 
         public string documento_numero {  get; set; }

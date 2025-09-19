@@ -14,8 +14,8 @@ namespace Domain.Interfaces.Getting
 
         public Task<List<ListarCargosEntity>> listarCargos();
 
-        public Task<List<ListaPrivilegiosEntity>> listarPrivilegios(int sistema_id, int usuario_id, string documento_numero);
+        public Task<List<ListaPrivilegiosEntity>> listarAccesos(int sistema_id, int usuario_id, string documento_numero);
 
-        public Task<List<ListarUsuarioEntity>> listarUsuarios(int sistema_id);
+        public Task<List<ListarUsuarioEntity>> listarUsuarios();
     }
 }

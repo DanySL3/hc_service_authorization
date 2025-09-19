@@ -9,7 +9,7 @@ namespace Domain.Interfaces.Getting
 {
     public interface IAgenciaGettingInfrastructure
     {
-        public Task<List<DatosAgenciaEntity>> obtenerAgencia(int usuario_id, int sistema_id);
+        public Task<List<DatosAgenciaEntity>> obtenerAgencia(int usuario_id, int sistema_codigo);
 
         public Task<List<DatosAgenciaEntity>> listarAgencia();
     }

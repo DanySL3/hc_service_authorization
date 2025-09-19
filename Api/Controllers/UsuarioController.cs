@@ -119,11 +119,11 @@ namespace Api.Controllers
         [HttpGet]
         [Route("listar-usuarios")]
 
-        public async Task<IActionResult> listarUsuarios([FromQuery] int sistema_id = 0)
+        public async Task<IActionResult> listarUsuarios([FromQuery] int index = 0, [FromQuery] int cantidad = 10)
         {
             try
             {
-                var dataResponse = await usuarioApplication.listarUsuarios(sistema_id);
+                var dataResponse = await usuarioApplication.listarUsuarios();
 
                 return StatusCode(200, dataResponse);
             }
@@ -156,6 +156,62 @@ namespace Api.Controllers
             catch (Exception ex)
             {
                 logger.LogError("/api/identity/listar-privilegios: [error] " + ex.Message);
+
+                if (lDevelopment)
+                {
+                    return StatusCode(500, objResponseHelper.errorSimpleServidor("2000", MessageException.GetErrorByCode(2000, ex.Message)));
+                }
+                else
+                {
+                    return StatusCode(500, objResponseHelper.errorSimpleServidor("2000", MessageException.GetErrorByCode(500)));
+                }
+            }
+        }
+
+        [HttpPut]
+        [Route("suspender-usuario")]
+
+        public async Task<IActionResult> suspenderUsuario([FromQuery] int usuario_id)
+        {
+            try
+            {
+                int usuario_modifica_id = Convert.ToInt32(User.FindFirstValue("usuario_id"));
+
+                var dataResponse = await usuarioApplication.suspenderUsuario(usuario_modifica_id, usuario_id);
+
+                return StatusCode(200, dataResponse);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"{HttpContext.Request.Path}: [error] {ex.Message}");
+
+                if (lDevelopment)
+                {
+                    return StatusCode(500, objResponseHelper.errorSimpleServidor("2000", MessageException.GetErrorByCode(2000, ex.Message)));
+                }
+                else
+                {
+                    return StatusCode(500, objResponseHelper.errorSimpleServidor("2000", MessageException.GetErrorByCode(500)));
+                }
+            }
+        }
+
+        [HttpPut]
+        [Route("activar-usuario")]
+
+        public async Task<IActionResult> activarUsuario([FromQuery] int usuario_id)
+        {
+            try
+            {
+                int usuario_modifica_id = Convert.ToInt32(User.FindFirstValue("usuario_id"));
+
+                var dataResponse = await usuarioApplication.activarUsuario(usuario_modifica_id, usuario_id);
+
+                return StatusCode(200, dataResponse);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"{HttpContext.Request.Path}: [error] {ex.Message}");
 
                 if (lDevelopment)
                 {
@@ -226,15 +282,15 @@ namespace Api.Controllers
 
 
         [HttpPost]
-        [Route("guardar-privilegios")]
+        [Route("guardar-accesos")]
 
-        public async Task<IActionResult> registrarPrivilegios([FromBody] RegistrarPrivilegiosAdapter objModel)
+        public async Task<IActionResult> registrarPrivilegios([FromBody] RegistrarAccesosAdapter objModel)
         {
             try
             {
                 int usuario_id = Convert.ToInt32(User.FindFirstValue("usuario_id"));
 
-                var dataResponse = await usuarioApplication.registrarPrivilegios(objModel, usuario_id);
+                var dataResponse = await usuarioApplication.registrarAccesos(objModel, usuario_id);
 
                 return StatusCode(200, dataResponse);
             }
@@ -253,8 +309,9 @@ namespace Api.Controllers
             }
         }
 
+
         [HttpGet]
-        [Route("listar-privilegios")]
+        [Route("listar-accesos")]
 
         public async Task<IActionResult> listarPrivilegios([FromQuery] int sistema_id = 0,
                                                            [FromQuery] int usuario_id = 0,
@@ -262,7 +319,7 @@ namespace Api.Controllers
         {
             try
             {
-                var dataResponse = await usuarioApplication.listarPrivilegios(sistema_id, usuario_id, documento_numero);
+                var dataResponse = await usuarioApplication.listarAccesos(sistema_id, usuario_id, documento_numero);
 
                 return StatusCode(200, dataResponse);
             }
@@ -282,7 +339,7 @@ namespace Api.Controllers
         }
 
         [HttpDelete]
-        [Route("eliminar-privilegios")]
+        [Route("eliminar-accesos")]
 
         public async Task<IActionResult> actualizarPrivilegios([FromQuery] int sistema_id, [FromQuery] int perfil_id, [FromQuery] int usuario_id)
         {
@@ -290,7 +347,7 @@ namespace Api.Controllers
             {
                 int usuario_modifica_id = Convert.ToInt32(User.FindFirstValue("usuario_id"));
 
-                var dataResponse = await usuarioApplication.eliminarPrivilegios(sistema_id, perfil_id, usuario_id, usuario_modifica_id);
+                var dataResponse = await usuarioApplication.eliminarAccesos(sistema_id, perfil_id, usuario_id, usuario_modifica_id);
 
                 return StatusCode(200, dataResponse);
             }
@@ -308,6 +365,8 @@ namespace Api.Controllers
                 }
             }
         }
+
+
 
         [HttpGet]
         [Route("listar-cargos")]
@@ -317,62 +376,6 @@ namespace Api.Controllers
             try
             {
                 var dataResponse = await usuarioApplication.listarCargos();
-
-                return StatusCode(200, dataResponse);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError($"{HttpContext.Request.Path}: [error] {ex.Message}");
-
-                if (lDevelopment)
-                {
-                    return StatusCode(500, objResponseHelper.errorSimpleServidor("2000", MessageException.GetErrorByCode(2000, ex.Message)));
-                }
-                else
-                {
-                    return StatusCode(500, objResponseHelper.errorSimpleServidor("2000", MessageException.GetErrorByCode(500)));
-                }
-            }
-        }
-
-        [HttpPut]
-        [Route("suspender-usuario")]
-
-        public async Task<IActionResult> suspenderUsuario([FromQuery] int usuario_id)
-        {
-            try
-            {
-                int usuario_modifica_id = Convert.ToInt32(User.FindFirstValue("usuario_id"));
-
-                var dataResponse = await usuarioApplication.suspenderUsuario(usuario_modifica_id, usuario_id);
-
-                return StatusCode(200, dataResponse);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError($"{HttpContext.Request.Path}: [error] {ex.Message}");
-
-                if (lDevelopment)
-                {
-                    return StatusCode(500, objResponseHelper.errorSimpleServidor("2000", MessageException.GetErrorByCode(2000, ex.Message)));
-                }
-                else
-                {
-                    return StatusCode(500, objResponseHelper.errorSimpleServidor("2000", MessageException.GetErrorByCode(500)));
-                }
-            }
-        }
-
-        [HttpPut]
-        [Route("activar-usuario")]
-
-        public async Task<IActionResult> activarUsuario([FromQuery] int usuario_id)
-        {
-            try
-            {
-                int usuario_modifica_id = Convert.ToInt32(User.FindFirstValue("usuario_id"));
-
-                var dataResponse = await usuarioApplication.activarUsuario(usuario_modifica_id, usuario_id);
 
                 return StatusCode(200, dataResponse);
             }

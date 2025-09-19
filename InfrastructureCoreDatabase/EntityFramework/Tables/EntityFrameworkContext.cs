@@ -430,7 +430,6 @@ public partial class EntityFrameworkContext : DbContext
             entity.Property(e => e.Nombre)
                 .HasMaxLength(250)
                 .HasColumnName("nombre");
-            entity.Property(e => e.PersonaId).HasColumnName("persona_id");
             entity.Property(e => e.Updatedat)
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("updatedat");

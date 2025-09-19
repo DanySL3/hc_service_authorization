@@ -23,7 +23,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
             db = _db;
         }
 
-        public async Task<List<DatosMenusEntity>> obtenerMenuUsuario(int perfil_id, int sistema_id, int sistema_codigo)
+        public async Task<List<DatosMenusEntity>> obtenerMenuUsuario(int perfil_id, int sistema_codigo)
         {
             var menus = new List<DatosMenusEntity>();
 
@@ -40,7 +40,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
             //menus
 
             menus = await db.Menus
-                .Where(m => m.Isactive == true && m.SistemaId == (sistema_id == 0 ? sistema.sistema_id : sistema_id))
+                .Where(m => m.Isactive == true && m.SistemaId == sistema.sistema_id)
                 .Join(db.MenuPerfils,
                     m => m.Id,
                     p => p.MenuId,
