@@ -33,7 +33,7 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        [Route("consultar-agencias-acceso")]
+        [Route("listar-agencias-usuario")]
 
         public async Task<IActionResult> listarAgenciasUsuario()
         {

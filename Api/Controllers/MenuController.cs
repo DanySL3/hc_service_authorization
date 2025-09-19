@@ -32,7 +32,7 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        [Route("consultar-menus-acceso")]
+        [Route("consultar-menus-usuario")]
         [Authorize]
 
         public async Task<IActionResult> ObtenerMenuUsuario()
