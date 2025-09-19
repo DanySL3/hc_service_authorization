@@ -43,22 +43,11 @@ namespace Application.Usecases
             return objResponseHelper.successResponse(datos);
         }
 
-        public async Task<DataResponse> ObtenerPerfil(int usuario_id, int sistema_id, int sistema_codigo)
+        public async Task<DataResponse> obtenerPerfilUsuario(int usuario_id, int sistema_codigo)
         {
-            //validación de campos
-
-            var lstErrores = new List<FieldResponse>();
-
-            if (sistema_id < 0)
-                lstErrores.Add(new FieldResponse() { Code = "1010", Message = MessageException.GetErrorByCode(1010, "id de sistema"), Field = "sistema_id" });
-
-            if (lstErrores.Any())
-                return objResponseHelper.errorList(lstErrores);
-
-
             //ejecución de petición
 
-            var datos = await perfilGettingInfrastructure.ObtenerPerfil(usuario_id, sistema_id, sistema_codigo);
+            var datos = await perfilGettingInfrastructure.obtenerPerfilUsuario(usuario_id, sistema_codigo);
 
             if (datos.Count == 0)
                 return objResponseHelper.emptyResponse();
@@ -167,7 +156,7 @@ namespace Application.Usecases
             return objResponseHelper.successResponse(datos);
         }
 
-        public async Task<DataResponse> ObtenerPerfilNoAsginado(int sistema_id, int usuario_id)
+        public async Task<DataResponse> obtenerPerfilNoAsginado(int sistema_id, int usuario_id)
         {
             //validación de campos
 
@@ -185,7 +174,7 @@ namespace Application.Usecases
 
             //ejecución de petición
 
-            var datos = await perfilGettingInfrastructure.ObtenerPerfilNoAsginado(sistema_id, usuario_id);
+            var datos = await perfilGettingInfrastructure.obtenerPerfilNoAsginado(sistema_id, usuario_id);
 
             if (datos.Count == 0)
                 return objResponseHelper.emptyResponse();

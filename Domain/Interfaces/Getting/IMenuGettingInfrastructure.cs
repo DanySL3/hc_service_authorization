@@ -13,6 +13,6 @@ namespace Domain.Interfaces.Getting
 
         public Task<List<DatosMenusExternoEntity>> obtenerMenuExternos();
 
-        public Task<List<DatosMenusExternoEntity>> obtenerMenuSistema(int perfil_id, int sistema_id);
+        public Task<List<DatosMenusExternoEntity>> ObtenerMenuPerfil(int perfil_id, int sistema_id);
     }
 }

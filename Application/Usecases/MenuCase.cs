@@ -57,7 +57,7 @@ namespace Application.Usecases
             return objResponseHelper.successResponse(datos);
         }
 
-        public async Task<DataResponse> obtenerMenuSistema(int perfil_id, int sistema_id)
+        public async Task<DataResponse> ObtenerMenuPerfil(int perfil_id, int sistema_id)
         {
             //validación de campos
 
@@ -75,7 +75,7 @@ namespace Application.Usecases
 
             //ejecución de petición
 
-            var datos = await menuGettingInfrastructure.obtenerMenuSistema(perfil_id, sistema_id);
+            var datos = await menuGettingInfrastructure.ObtenerMenuPerfil(perfil_id, sistema_id);
 
             if (datos.Count == 0)
                 return objResponseHelper.emptyResponse();

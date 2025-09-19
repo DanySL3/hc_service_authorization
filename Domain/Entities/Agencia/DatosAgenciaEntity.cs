@@ -12,6 +12,6 @@ namespace Domain.Entities.Agencia
 
         public string nombre { get; set; }
 
-        public bool? esPrincipal { get; set; }
+        public bool esPrincipal { get; set; }
     }
 }

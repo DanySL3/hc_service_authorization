@@ -9,7 +9,7 @@ namespace Application.Interfaces.Externals
 {
     public interface IAgenciaApplication
     {
-        public Task<DataResponse> obtenerAgencia(int usuario_id, int sistema_codigo);
+        public Task<DataResponse> listarAgenciasUsuario(int usuario_id, int sistema_codigo);
 
         public Task<DataResponse> listarAgencia();
     }

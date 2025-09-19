@@ -33,37 +33,9 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        [Route("listar-perfiles-no-asignados")]
+        [Route("consultar-perfiles-acceso")]
 
-        public async Task<IActionResult> ObtenerPerfilNoAsginado([FromQuery] int sistema_id, [FromQuery] int usuario_id)
-        {
-            try
-            {
-                var dataResponse = await objPerfilApplication.ObtenerPerfilNoAsginado(sistema_id, usuario_id);
-
-                return StatusCode(200, dataResponse);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError($"{HttpContext.Request.Path}: [error] {ex.Message}");
-
-
-                if (lDevelopment)
-                {
-                    return StatusCode(500, objResponseApp.errorSimpleServidor("2000", MessageException.GetErrorByCode(2000, ex.Message)));
-                }
-                else
-                {
-                    return StatusCode(500, objResponseApp.errorSimpleServidor("2000", MessageException.GetErrorByCode(500)));
-                }
-            }
-        }
-
-
-        [HttpGet]
-        [Route("listar-perfiles-usuario")]
-
-        public async Task<IActionResult> ObtenerPerfil([FromQuery] int sistema_id = 0)
+        public async Task<IActionResult> ObtenerPerfilUsuario()
         {
             try
             {
@@ -71,7 +43,7 @@ namespace Api.Controllers
 
                 int sistema_codigo = Convert.ToInt32(User.FindFirstValue("sistema_codigo"));
 
-                var dataResponse = await objPerfilApplication.ObtenerPerfil(usuario_id, sistema_id, sistema_codigo);
+                var dataResponse = await objPerfilApplication.obtenerPerfilUsuario(usuario_id, sistema_codigo);
 
                 return StatusCode(200, dataResponse);
             }
@@ -90,6 +62,34 @@ namespace Api.Controllers
             }
         }
 
+
+
+
+        [HttpGet]
+        [Route("listar-perfiles-no-asignados")]
+
+        public async Task<IActionResult> ObtenerPerfilNoAsginado([FromQuery] int sistema_id, [FromQuery] int usuario_id)
+        {
+            try
+            {
+                var dataResponse = await objPerfilApplication.obtenerPerfilNoAsginado(sistema_id, usuario_id);
+
+                return StatusCode(200, dataResponse);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"{HttpContext.Request.Path}: [error] {ex.Message}");
+
+                if (lDevelopment)
+                {
+                    return StatusCode(500, objResponseApp.errorSimpleServidor("2000", MessageException.GetErrorByCode(2000, ex.Message)));
+                }
+                else
+                {
+                    return StatusCode(500, objResponseApp.errorSimpleServidor("2000", MessageException.GetErrorByCode(500)));
+                }
+            }
+        }
 
 
 

@@ -47,6 +47,9 @@ public partial class EntityFrameworkContext : DbContext
 
     public virtual DbSet<Variable> Variables { get; set; }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseNpgsql("Host=192.168.1.95;Port=5432;Database=db_identity;Username=HCUser_PS;Password=hc+2024;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -62,9 +65,6 @@ public partial class EntityFrameworkContext : DbContext
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("createdat");
-            entity.Property(e => e.Esprincipal)
-                .HasDefaultValue(false)
-                .HasColumnName("esprincipal");
             entity.Property(e => e.Isactive)
                 .HasDefaultValue(true)
                 .HasColumnName("isactive");

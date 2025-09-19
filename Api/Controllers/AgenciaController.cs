@@ -33,9 +33,9 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        [Route("listar-agencias-usuario")]
+        [Route("consultar-agencias-acceso")]
 
-        public async Task<IActionResult> obtenerAgencia()
+        public async Task<IActionResult> listarAgenciasUsuario()
         {
             try
             {
@@ -43,7 +43,7 @@ namespace Api.Controllers
 
                 int sistema_codigo = Convert.ToInt32(User.FindFirstValue("sistema_codigo"));
 
-                var dataResponse = await consultaAgenciaApplication.obtenerAgencia(usuario_id, sistema_codigo);
+                var dataResponse = await consultaAgenciaApplication.listarAgenciasUsuario(usuario_id, sistema_codigo);
 
                 return StatusCode(200, dataResponse);
             }

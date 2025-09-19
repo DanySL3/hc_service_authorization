@@ -62,16 +62,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
             return menus;
         }
 
-        public async Task<List<DatosMenusExternoEntity>> obtenerMenuExternos()
-        {
-            var menus = new List<DatosMenusExternoEntity>();
-
-            menus = await ObtenerMenusHijosExterno(0);
-
-            return menus;
-        }
-
-        public async Task<List<DatosMenusExternoEntity>> obtenerMenuSistema(int perfil_id, int sistema_id)
+        public async Task<List<DatosMenusExternoEntity>> ObtenerMenuPerfil(int perfil_id, int sistema_id)
         {
             var menus = new List<DatosMenusExternoEntity>();
 
@@ -97,6 +88,15 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                         }
                     ).ToListAsync();
 
+
+            return menus;
+        }
+
+        public async Task<List<DatosMenusExternoEntity>> obtenerMenuExternos()
+        {
+            var menus = new List<DatosMenusExternoEntity>();
+
+            menus = await ObtenerMenusHijosExterno(0);
 
             return menus;
         }

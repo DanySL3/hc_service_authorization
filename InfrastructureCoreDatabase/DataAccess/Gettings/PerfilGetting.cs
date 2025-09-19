@@ -41,7 +41,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
             return perfiles;
         }
 
-        public async Task<List<DatosPerfilEntity>> ObtenerPerfil(int usuario_id, int sistema_id, int sistema_codigo)
+        public async Task<List<DatosPerfilEntity>> obtenerPerfilUsuario(int usuario_id, int sistema_codigo)
         {
             //sistema
 
@@ -63,7 +63,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                 .Where(u =>
                     u.UsuarioId == usuario_id &&
                     u.Isactive == true &&
-                    u.SistemaId == (sistema_id == 0 ? sistema.sistema_id : sistema_id) &&
+                    u.SistemaId == sistema.sistema_id &&
                     fecha >= u.FechaInicio &&
                     (u.FechaFin == null || fecha <= u.FechaFin)
                 )
@@ -86,7 +86,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
 
         }
 
-        public async Task<List<DatosPerfilEntity>> ObtenerPerfilNoAsginado(int sistema_id, int usuario_id)
+        public async Task<List<DatosPerfilEntity>> obtenerPerfilNoAsginado(int sistema_id, int usuario_id)
         {
             var perfiles = await db.Database.SqlQuery<DatosPerfilEntity>(
                 $"""

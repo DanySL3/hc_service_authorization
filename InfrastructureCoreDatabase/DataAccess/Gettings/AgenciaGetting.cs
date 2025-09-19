@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.Agencia;
+using Domain.Entities.Menu;
 using Domain.Entities.Perfil;
 using Domain.Enums;
 using Domain.Interfaces.Getting;
@@ -32,7 +33,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
 
         }
 
-        public async Task<List<DatosAgenciaEntity>> obtenerAgencia(int usuario_id, int sistema_codigo)
+        public async Task<List<DatosAgenciaEntity>> listarAgenciasUsuario(int usuario_id, int sistema_codigo)
         {
             var agencias = new List<DatosAgenciaEntity>();
 
@@ -75,7 +76,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                           {
                               agencia_id = a.AgenciaId,
                               nombre = b.Nombre.Trim(),
-                              esPrincipal = a.Esprincipal
+                              esPrincipal = false
                           })
                     .ToListAsync();
             }

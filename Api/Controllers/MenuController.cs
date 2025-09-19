@@ -32,7 +32,7 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        [Route("consultar-menus-usuario")]
+        [Route("consultar-menus-acceso")]
         [Authorize]
 
         public async Task<IActionResult> ObtenerMenuUsuario()
@@ -66,11 +66,11 @@ namespace Api.Controllers
         [Route("consultar-menus-perfil")]
         [Authorize]
 
-        public async Task<IActionResult> ObtenerMenuSistema([FromQuery] int sistema_id, [FromQuery] int perfil_id)
+        public async Task<IActionResult> ObtenerMenuPerfil([FromQuery] int sistema_id, [FromQuery] int perfil_id)
         {
             try
             {
-                var dataResponse = await objMenuApplication.obtenerMenuSistema(perfil_id, sistema_id);
+                var dataResponse = await objMenuApplication.ObtenerMenuPerfil(perfil_id, sistema_id);
 
                 return StatusCode(200, dataResponse);
             }

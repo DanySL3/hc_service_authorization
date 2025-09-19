@@ -24,11 +24,11 @@ namespace Application.Usecases
             objResponseHelper = new ResponseHelper();
         }
 
-        public async Task<DataResponse> obtenerAgencia(int usuario_id, int sistema_codigo)
+        public async Task<DataResponse> listarAgenciasUsuario(int usuario_id, int sistema_codigo)
         {
             //ejecución de petición
 
-            var datos = await objAgenciaGettingInfrastructure.obtenerAgencia(usuario_id, sistema_codigo);
+            var datos = await objAgenciaGettingInfrastructure.listarAgenciasUsuario(usuario_id, sistema_codigo);
 
             if (datos.Count == 0)
                 return objResponseHelper.emptyResponse();

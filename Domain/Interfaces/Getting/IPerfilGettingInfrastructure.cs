@@ -12,8 +12,8 @@ namespace Domain.Interfaces.Getting
 
         public Task<List<DatosPerfilEntity>> listarPerfiles();
 
-        public Task<List<DatosPerfilEntity>> ObtenerPerfil(int usuario_id, int sistema_id, int sistema_codigo);
+        public Task<List<DatosPerfilEntity>> obtenerPerfilUsuario(int usuario_id, int sistema_codigo);
 
-        public Task<List<DatosPerfilEntity>> ObtenerPerfilNoAsginado(int sistema_id, int usuario_id);
+        public Task<List<DatosPerfilEntity>> obtenerPerfilNoAsginado(int sistema_id, int usuario_id);
     }
 }

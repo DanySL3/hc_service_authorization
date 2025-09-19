@@ -11,6 +11,6 @@ namespace Application.Interfaces.Externals
     {
         public Task<DataResponse> obtenerMenuUsuario(int perfil_id, int sistema_codigo);
         public Task<DataResponse> obtenerMenuExternos();
-        public Task<DataResponse> obtenerMenuSistema(int perfil_id, int sistema_id);
+        public Task<DataResponse> ObtenerMenuPerfil(int perfil_id, int sistema_id);
     }
 }
