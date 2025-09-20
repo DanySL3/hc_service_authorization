@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,5 +26,8 @@ namespace Domain.Entities.Usuario
         public int usuario_estado_id { get; set; }
 
         public string usuario_estado { get; set; }
+
+        [JsonIgnore]
+        public int total_count { get; set; }
     }
 }

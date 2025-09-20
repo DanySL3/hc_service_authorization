@@ -217,7 +217,7 @@ namespace Application.Usecases
 
             var datos = await objUsuarioGettingInfrastructure.listarUsuarios(index, cantidad);
 
-            if (datos.Count == 0)
+            if (datos.data.Count == 0)
                 return objResponseHelper.emptyResponse();
 
             return objResponseHelper.successResponse(datos);

@@ -1,4 +1,6 @@
-﻿using Domain.Entities.Autenticacion;
+﻿using Domain.Entities;
+using Domain.Entities.Agencia;
+using Domain.Entities.Autenticacion;
 using Domain.Entities.Sistema;
 using Domain.Entities.Usuario;
 using Domain.Enums;
@@ -20,36 +22,73 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
             helper = _helper;
         }
 
-        public async Task<ListarUsuarioEntity> buscarUsuario(int usuario_id, string documento_numero)
+        public async Task<ConsultarDetalleUsuarioEntity> buscarUsuario(int usuario_id, string documento_numero)
         {
-            var usuario = await db.Database.SqlQuery<ListarUsuarioEntity>(
-                $"""
+            //usuario
 
-                SELECT
-                    A.id AS usuario_id,
-                    B.cargo_id,
-                    C.cargo,
-                    A.nombre,
-                    A.usuario,
-                    A.documento_numero,
-                    A.correo,
-                    A.usuario_estado_id,
-                    CASE
-                        WHEN A.usuario_estado_id = 1 THEN 'Activo'
-                        ELSE 'Suspendido'
-                    END AS usuario_estado
-                FROM usuario A
-                INNER JOIN cargo_usuario B
-                    ON A.id = B.usuario_id
-                   AND B.isactive = true
-                INNER JOIN cargo C
-                    ON B.cargo_id = C.id
-                WHERE
-                    A.isactive = true
-                    AND A.id = CASE WHEN {usuario_id} != 0 THEN {usuario_id} ELSE A.id END
-                    AND A.documento_numero LIKE CONCAT('%', {documento_numero}, '%')
-                
-                """).FirstOrDefaultAsync();
+            var usuario = await db.Usuarios
+                .Where(x => x.Isactive == true &&
+                            x.Id == (usuario_id == 0 ? x.Id : usuario_id) &&
+                            x.DocumentoNumero.ToUpper().Contains(documento_numero.ToUpper())).
+                Join(db.CargoUsuarios.Where(x => x.Isactive == true),
+                    a => a.Id,
+                    b => b.UsuarioId,
+                    (a, b) => new { a, b }
+                ).
+                Join(db.Cargos,
+                    ab => ab.b.CargoId,
+                    c => c.Id,
+                    (ab, c) => new { ab, c }
+                ).
+                Select(x => new ConsultarDetalleUsuarioEntity
+                {
+                    usuario_id = x.ab.a.Id,
+                    usuario_estado_id = x.ab.a.UsuarioEstadoId,
+                    correo = x.ab.a.Correo,
+                    cargo_id = x.c.Id,
+                    cargo = x.c.Cargo1,
+                    nombre = x.ab.a.Nombre,
+                    usuario = x.ab.a.Usuario1,
+                    documento_numero = x.ab.a.DocumentoNumero,
+                    usuario_estado = x.ab.a.UsuarioEstadoId == 1 ? "Activo" : "Suspendido"
+
+                }).FirstOrDefaultAsync();
+
+            if (usuario == null) return null;
+
+            //agencias
+
+            var agenciasUsuario = await db.AgenciaUsuarios
+                 .Where(x => x.UsuarioId == usuario_id && x.Isactive == true && x.AgenciaId == 0)
+                 .FirstOrDefaultAsync();
+
+            if (agenciasUsuario != null)
+            {
+                usuario.lstAgencias = await db.Agencia
+                    .Where(b => b.Isactive == true)
+                    .Select(b => new DatosAgenciaEntity
+                    {
+                        agencia_id = b.Id,
+                        nombre = b.Nombre.Trim(),
+                        esPrincipal = false
+                    })
+                    .ToListAsync();
+            }
+            else
+            {
+                usuario.lstAgencias = await db.AgenciaUsuarios
+                    .Where(x => x.UsuarioId == usuario_id && x.Isactive == true)
+                    .Join(db.Agencia,
+                          a => a.AgenciaId,
+                          b => b.Id,
+                          (a, b) => new DatosAgenciaEntity
+                          {
+                              agencia_id = a.AgenciaId,
+                              nombre = b.Nombre.Trim(),
+                              esPrincipal = false
+                          })
+                    .ToListAsync();
+            }
 
             return usuario;
         }
@@ -104,7 +143,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
             return accesos;
         }
 
-        public async Task<List<ListarUsuarioEntity>> listarUsuarios(int index, int cantidad)
+        public async Task<paginationEntity<ListarUsuarioEntity>> listarUsuarios(int index, int cantidad)
         {
             var usuarios = await db.Database.SqlQuery<ListarUsuarioEntity>(
                 $"""
@@ -121,7 +160,8 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                     CASE
                         WHEN A.usuario_estado_id = 1 THEN 'Activo'
                         ELSE 'Suspendido'
-                    END AS usuario_estado
+                    END AS usuario_estado,
+                    COUNT(*) OVER() AS total_count
                 FROM usuario A
                 INNER JOIN cargo_usuario B
                     ON A.id = B.usuario_id
@@ -129,10 +169,20 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                 INNER JOIN cargo C
                     ON B.cargo_id = C.id
                 WHERE A.isactive = true
+                ORDER BY A.id desc
+                offset {index * cantidad} limit {cantidad}
                 
                 """).ToListAsync();
 
-            return usuarios;
+            var datos = new paginationEntity<ListarUsuarioEntity>
+            {
+                page_index = index,
+                page_size = cantidad,
+                total_count = usuarios.FirstOrDefault()?.total_count ?? 0,
+                data = usuarios
+            };
+
+            return datos;
         }
     }
 }
