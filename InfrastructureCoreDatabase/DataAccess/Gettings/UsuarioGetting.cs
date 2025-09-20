@@ -134,7 +134,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                     A.isactive = true
                    AND ({sistema_id} = 0 OR B.sistema_id = {sistema_id})
                    AND ({usuario_id} = 0 OR A.id = {usuario_id})
-                   AND ({documento_numero} = '' OR A.documento_numero LIKE CONCAT('%' + {documento_numero} + '%'))
+                   AND ({documento_numero} = '' OR A.documento_numero LIKE CONCAT('%' || {documento_numero} || '%'))
                 ORDER BY A.id desc
 
                 
