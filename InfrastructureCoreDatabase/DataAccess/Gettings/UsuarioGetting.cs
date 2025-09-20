@@ -74,29 +74,29 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                 $"""
 
                 SELECT
-                    A.usuario_id AS nCodigoCliente,
-                    A.cNombre AS cNombre,
-                    C.sistema_id,
-                    C.cNombre AS cSistema,
-                    CAST(D.dFecIni AS CHAR(10)) AS cFechaIniAcceso,
-                    IFNULL(CAST(D.dFecFin AS CHAR(10)), 'Sin limite') AS cFechaFinAcceso,
-                    E.idPerfil,
-                    E.cPerfil AS cPrivilegio
+                    A.id as usuario_id,
+                    A.nombre,
+                    C.id AS sistema_id,
+                    C.nombre AS sistema,
+                    CAST(D.fecha_inicio AS CHAR(10)) AS fechaIniAcceso,
+                    COALESCE(CAST(D.fecha_fin AS CHAR(10)), 'Sin limite') AS fechaFinAcceso,
+                    E.id AS perfil_id,
+                    E.perfil
                 FROM Usuario A
-                INNER JOIN SistemaByUsuario B ON 
-                    B.usuario_id = A.usuario_id
-                    AND B.lActivo = 1
-                    AND (B.dFecIni IS NULL OR CAST(NOW() AS DATE) >= CAST(B.dFecIni AS DATE))
-                    AND (B.dFecFin IS NULL OR CAST(NOW() AS DATE) <= CAST(B.dFecFin AS DATE))
-                INNER JOIN Sistema C ON C.sistema_id = B.sistema_id
-                INNER JOIN PerfilByUsuario D ON D.sistema_id = B.sistema_id AND D.usuario_id = B.usuario_id AND D.lVigente = 1
-                INNER JOIN Perfil E ON E.idPerfil = D.idPerfil
+                INNER JOIN sistema_usuario B ON
+                    B.usuario_id = A.id
+                    AND B.isactive = true
+                    AND CAST(NOW() AS DATE) >= CAST(B.fecha_inicio AS DATE)
+                    AND (B.fecha_fin IS NULL OR CAST(NOW() AS DATE) <= CAST(B.fecha_fin AS DATE))
+                INNER JOIN Sistema C ON C.id = B.sistema_id
+                INNER JOIN perfil_usuario D ON D.sistema_id = B.sistema_id AND D.usuario_id = B.usuario_id AND D.isactive = true
+                INNER JOIN Perfil E ON E.id = D.perfil_id
                 WHERE 
-                    A.lActivo = 1
-                    AND B.sistema_id = IF({sistema_id} != 0, {sistema_id}, B.sistema_id)
-                    AND A.usuario_id = IF({usuario_id} != 0, {usuario_id}, A.usuario_id)
-                    AND A.cNumeroDocumento LIKE CONCAT('%', {documento_numero}, '%') 
-                ORDER BY A.usuario_id
+                    A.isactive = true
+                   AND ({sistema_id} = 0 OR B.sistema_id = {sistema_id})
+                   AND ({usuario_id} = 0 OR A.id = {usuario_id})
+                   AND ({documento_numero} = '' OR A.documento_numero LIKE CONCAT('%' + {documento_numero} + '%'))
+                ORDER BY A.id desc
 
                 
                 """).ToListAsync();
@@ -104,7 +104,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
             return accesos;
         }
 
-        public async Task<List<ListarUsuarioEntity>> listarUsuarios()
+        public async Task<List<ListarUsuarioEntity>> listarUsuarios(int index, int cantidad)
         {
             var usuarios = await db.Database.SqlQuery<ListarUsuarioEntity>(
                 $"""

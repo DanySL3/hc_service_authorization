@@ -18,7 +18,7 @@ namespace Application.Interfaces.Externals
 
         public Task<DataResponse> obtenerPerfilUsuario(int usuario_id, int sistema_codigo);
 
-        public Task<DataResponse> obtenerPerfilNoAsginado(int sistema_id, int usuario_id);
+        public Task<DataResponse> obtenerPerfilesFaltantes(int sistema_id, int usuario_id);
 
         public Task<DataResponse> registrarPerfil(RegitrarPerfilAdapter objModel, int usuario_id);
 

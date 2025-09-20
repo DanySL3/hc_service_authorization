@@ -123,7 +123,7 @@ namespace Api.Controllers
         {
             try
             {
-                var dataResponse = await usuarioApplication.listarUsuarios();
+                var dataResponse = await usuarioApplication.listarUsuarios(index, cantidad);
 
                 return StatusCode(200, dataResponse);
             }

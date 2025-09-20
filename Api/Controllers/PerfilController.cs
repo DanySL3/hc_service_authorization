@@ -64,15 +64,14 @@ namespace Api.Controllers
 
 
 
-
         [HttpGet]
-        [Route("listar-perfiles-no-asignados")]
+        [Route("listar-perfiles-faltantes")]
 
-        public async Task<IActionResult> ObtenerPerfilNoAsginado([FromQuery] int sistema_id, [FromQuery] int usuario_id)
+        public async Task<IActionResult> obtenerPerfilesFaltantes([FromQuery] int sistema_id, [FromQuery] int usuario_id)
         {
             try
             {
-                var dataResponse = await objPerfilApplication.obtenerPerfilNoAsginado(sistema_id, usuario_id);
+                var dataResponse = await objPerfilApplication.obtenerPerfilesFaltantes(sistema_id, usuario_id);
 
                 return StatusCode(200, dataResponse);
             }
@@ -90,8 +89,6 @@ namespace Api.Controllers
                 }
             }
         }
-
-
 
 
         [HttpPost]

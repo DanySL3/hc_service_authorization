@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Domain.Exceptions;
 using InfrastructureCoreDatabase.EntityFramework.Tables;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Application.Usecases
 {
@@ -210,11 +211,11 @@ namespace Application.Usecases
             return objResponseHelper.successResponse(datos);
         }
 
-        public async Task<DataResponse> listarUsuarios()
+        public async Task<DataResponse> listarUsuarios(int index, int cantidad)
         {
             //ejecución de petición
 
-            var datos = await objUsuarioGettingInfrastructure.listarUsuarios();
+            var datos = await objUsuarioGettingInfrastructure.listarUsuarios(index, cantidad);
 
             if (datos.Count == 0)
                 return objResponseHelper.emptyResponse();
@@ -288,7 +289,7 @@ namespace Application.Usecases
             if (usuario_id <= 0)
                 errores.Add(new FieldResponse() { Code = "1010", Message = MessageException.GetErrorByCode(1010, "id de usuario"), Field = "usuario_id" });
 
-            if (perfil_id <= 0)
+            if (perfil_id < 0)
                 errores.Add(new FieldResponse() { Code = "1010", Message = MessageException.GetErrorByCode(10010, "id de perfil"), Field = "perfil_id" });
 
             if (sistema_id <= 0)

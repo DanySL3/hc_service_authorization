@@ -14,6 +14,6 @@ namespace Domain.Entities.Perfil
 
         public int codigo { get; set; }
 
-        public bool? esPrincipal { get; set; }
+        public bool esPrincipal { get; set; }
     }
 }

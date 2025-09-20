@@ -31,7 +31,7 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        [Route("consultar-sistemas-acceso")]
+        [Route("consultar-sistemas-usuario")]
 
         public async Task<IActionResult> obtenerAplicacion()
         {

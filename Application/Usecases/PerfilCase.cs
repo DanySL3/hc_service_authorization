@@ -156,7 +156,7 @@ namespace Application.Usecases
             return objResponseHelper.successResponse(datos);
         }
 
-        public async Task<DataResponse> obtenerPerfilNoAsginado(int sistema_id, int usuario_id)
+        public async Task<DataResponse> obtenerPerfilesFaltantes(int sistema_id, int usuario_id)
         {
             //validación de campos
 
@@ -174,7 +174,7 @@ namespace Application.Usecases
 
             //ejecución de petición
 
-            var datos = await perfilGettingInfrastructure.obtenerPerfilNoAsginado(sistema_id, usuario_id);
+            var datos = await perfilGettingInfrastructure.obtenerPerfilesFaltantes(sistema_id, usuario_id);
 
             if (datos.Count == 0)
                 return objResponseHelper.emptyResponse();

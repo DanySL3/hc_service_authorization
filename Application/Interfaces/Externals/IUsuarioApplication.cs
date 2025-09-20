@@ -1,6 +1,7 @@
 ﻿using Application.Adapters.Internals;
 using Application.Adapters.Request;
 using InfrastructureCoreDatabase.EntityFramework.Tables;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace Application.Interfaces.Externals
 {
     public interface IUsuarioApplication
     {
-        public Task<DataResponse> listarUsuarios();
+        public Task<DataResponse> listarUsuarios(int index, int cantidad);
 
         public Task<DataResponse> registrarAccesos(RegistrarAccesosAdapter objModel, int usuario_id);
 

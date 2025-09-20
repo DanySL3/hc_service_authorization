@@ -86,15 +86,15 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
 
         }
 
-        public async Task<List<DatosPerfilEntity>> obtenerPerfilNoAsginado(int sistema_id, int usuario_id)
+        public async Task<List<DatosPerfilEntity>> obtenerPerfilesFaltantes(int sistema_id, int usuario_id)
         {
             var perfiles = await db.Database.SqlQuery<DatosPerfilEntity>(
                 $"""
 
                 SELECT
-                   	a.id AS perfil_id,
-                   	a.perfil AS perfil,
-                   	a.codigo AS codigo,
+                    a.id AS perfil_id,
+                    a.perfil AS perfil,
+                    a.codigo AS codigo,
                    	FALSE AS esPrincipal
                 FROM perfil a
                 LEFT JOIN perfil_usuario b

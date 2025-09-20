@@ -444,7 +444,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
             }
         }
 
-        public async Task<TransaccionEntity> eliminarAccesos(int sistema_id, int idPerfil, int usuario_id, int usuario_idModifica)
+        public async Task<TransaccionEntity> eliminarAccesos(int sistema_id, int perfil_id, int usuario_id, int usuario_idModifica)
         {
             using (var dbTransactionScope = new TransactionScope(TransactionScopeOption.Required,
                                            new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))
@@ -455,19 +455,33 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
 
                     if (usuario == null) return new TransaccionEntity { Code = false, ID = 0, Message = "no hay datos con el identificador de usuario" };
 
-                    var perfilUsuario = db.PerfilUsuarios.Where(x => x.UsuarioId == usuario_id && x.PerfilId == idPerfil && x.SistemaId == sistema_id).FirstOrDefault();
+                    if(perfil_id == 0)
+                    {
+                        var sistemaUsuario = db.SistemaUsuarios.Where(x => x.UsuarioId == usuario_id && x.SistemaId == sistema_id).FirstOrDefault();
 
-                    if (perfilUsuario == null) return new TransaccionEntity { Code = false, ID = 0, Message = "el privilegio a eliminar no existe en el sistema" };
+                        if (sistemaUsuario == null) return new TransaccionEntity { Code = false, ID = 0, Message = "el privilegio a eliminar no existe" };
 
-                    perfilUsuario.Isactive = false;
-                    perfilUsuario.Usermodifiedid = usuario_idModifica;
-                    perfilUsuario.Updatedat = DateTime.Now;
+                        sistemaUsuario.Isactive = false;
+                        sistemaUsuario.Usermodifiedid = usuario_idModifica;
+                        sistemaUsuario.Updatedat = DateTime.Now;
+
+                    }
+                    else
+                    {
+                        var perfilUsuario = db.PerfilUsuarios.Where(x => x.UsuarioId == usuario_id && x.PerfilId == perfil_id && x.SistemaId == sistema_id).FirstOrDefault();
+
+                        if (perfilUsuario == null) return new TransaccionEntity { Code = false, ID = 0, Message = "el privilegio a eliminar no existe" };
+
+                        perfilUsuario.Isactive = false;
+                        perfilUsuario.Usermodifiedid = usuario_idModifica;
+                        perfilUsuario.Updatedat = DateTime.Now;
+                    }
 
                     db.SaveChanges();
 
                     dbTransactionScope.Complete();
 
-                    return new TransaccionEntity { Code = true, ID = perfilUsuario.Id, Message = "Los privilegios fuerón eliminados." };
+                    return new TransaccionEntity { Code = true, ID = usuario.Id, Message = "Los privilegios fuerón eliminados." };
                 }
                 catch (Exception ex)
                 {
