@@ -97,7 +97,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
 
                     dbTransactionScope.Complete();
 
-                    return new TransaccionEntity { Code = true, ID = usuarioDB.Id, Message = "Se actualizó correctamente el usuario." };
+                    return new TransaccionEntity { Code = true, ID = usuarioDB.Id, Message = "El usuario fue actualizado." };
                 }
                 catch (Exception ex)
                 {
@@ -134,7 +134,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
 
                         dbTransactionScope.Complete();
 
-                        return new TransaccionEntity { Code = true, ID = usuario.Id, Message = "Se actualizó correctamente la contraseña de usuario." };
+                        return new TransaccionEntity { Code = true, ID = usuario.Id, Message = "Contraseña de usuario actualizado." };
                     }
                     else
                     {
@@ -173,7 +173,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
 
                     dbTransactionScope.Complete();
 
-                    return new TransaccionEntity { Code = true, ID = usuario.Id, Message = "Se eliminó correctamente el usuario." };
+                    return new TransaccionEntity { Code = true, ID = usuario.Id, Message = "El usuario fue eliminado." };
                 }
                 catch (Exception ex)
                 {
@@ -260,7 +260,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
 
                     dbTransactionScope.Complete();
 
-                    return new TransaccionEntity { Code = true, ID = 0, Message = "Se registró correctamente los privilegios." };
+                    return new TransaccionEntity { Code = true, ID = 0, Message = "Los privilegios fueron registrados." };
                 }
                 catch (Exception ex)
                 {
@@ -284,7 +284,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                 {
                     var usuarioRegistrado = db.Usuarios.Where(x => x.Correo == correo).FirstOrDefault();
 
-                    if (usuarioRegistrado != null) return new TransaccionEntity { Code = false, ID = 0, Message = "no hay datos con el identificador de usuario" };
+                    if (usuarioRegistrado != null) return new TransaccionEntity { Code = false, ID = 0, Message = "el correo ya se encuentra registrado" };
 
                     var usuarioDB = new Usuario();
 
@@ -327,7 +327,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
 
                     dbTransactionScope.Complete();
 
-                    return new TransaccionEntity { Code = true, ID = usuarioDB.Id, Message = "Se registró correctamente el usuario." };
+                    return new TransaccionEntity { Code = true, ID = usuarioDB.Id, Message = "El usuario fue registrado." };
                 }
                 catch (Exception ex)
                 {
@@ -361,7 +361,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
 
                     dbTransactionScope.Complete();
 
-                    return new TransaccionEntity { Code = true, ID = usuario.Id, Message = "Se registró correctamente el usuario." };
+                    return new TransaccionEntity { Code = true, ID = usuario.Id, Message = "La contraseña se reseteo." };
                 }
                 catch (Exception ex)
                 {
@@ -395,7 +395,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
 
                     dbTransactionScope.Complete();
 
-                    return new TransaccionEntity { Code = true, ID = usuario.Id, Message = "La suspensión del usuario se realizó con éxito." };
+                    return new TransaccionEntity { Code = true, ID = usuario.Id, Message = "El usuario ha sido suspendido." };
                 }
                 catch (Exception ex)
                 {
@@ -429,7 +429,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
 
                     dbTransactionScope.Complete();
 
-                    return new TransaccionEntity { Code = true, ID = usuario.Id, Message = "El usuario ha sido activado satisfactoriamente." };
+                    return new TransaccionEntity { Code = true, ID = usuario.Id, Message = "El usuario ha sido activado." };
                 }
                 catch (Exception ex)
                 {
