@@ -12,6 +12,8 @@ namespace Domain.Entities.Perfil
 
         public string perfil { get; set; }
 
+        public string descripcion { get; set; }
+
         public int codigo { get; set; }
 
         public bool esPrincipal { get; set; }

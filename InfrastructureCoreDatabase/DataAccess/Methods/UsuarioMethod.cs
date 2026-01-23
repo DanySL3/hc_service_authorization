@@ -119,7 +119,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
             {
                 try
                 {
-                    var usuario = await db.Usuarios.Where(x => x.Id == usuario_id).FirstOrDefaultAsync();
+                    var usuario = db.Usuarios.Where(x => x.Id == usuario_id).FirstOrDefault();
 
                     if (usuario == null) return new TransaccionEntity { Code = false, ID = 0, Message = "no hay datos con el identificador de usuario" };
 
@@ -292,6 +292,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                     usuarioDB.DocumentoNumero = documento_numero;
                     usuarioDB.DocumentoTipoId = (int)documentoTipoEnum.DNI;
                     usuarioDB.Correo = correo;
+                    usuarioDB.UsuarioEstadoId = (int)usuarioEstadoEnum.vigente;
                     usuarioDB.Usuario1 = usuario;
                     usuarioDB.Nombre = nombre;
                     usuarioDB.Contrasenia = password;

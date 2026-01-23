@@ -11,6 +11,7 @@ namespace Application.Adapters.Request
     public class ActualizarPerfilAdapter
     {
         public int perfil_id { get; set; }
+        public int? sistema_id { get; set; }
         public string perfil { get; set; }
         public string descripcion { get; set; }
     }

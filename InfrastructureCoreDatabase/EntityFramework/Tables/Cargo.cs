@@ -7,7 +7,7 @@ public partial class Cargo
 {
     public int Id { get; set; }
 
-    public int? GerenciaId { get; set; }
+    public int? CargoPadreId { get; set; }
 
     public string Cargo1 { get; set; } = null!;
 

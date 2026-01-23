@@ -12,6 +12,7 @@ namespace Application.Adapters.Request
     public class RegitrarPerfilAdapter
     {
         public string perfil {  get; set; }
+        public int? sistema_id {  get; set; }
         public string descripcion {  get; set; }
     }
 }

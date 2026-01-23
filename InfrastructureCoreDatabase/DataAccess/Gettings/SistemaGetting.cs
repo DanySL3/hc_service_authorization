@@ -5,11 +5,6 @@ using Domain.Enums;
 using Domain.Interfaces.Getting;
 using InfrastructureCoreDatabase.EntityFramework.Tables;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InfrastructureCoreDatabase.DataAccess.Gettings
 {
@@ -28,9 +23,9 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                     {
                         sistema_id = x.Id,
                         nombre = x.Nombre,
-                        icono = "",
-                        url = "",
-                        codigo = 0
+                        icono = x.Icon ?? "",
+                        url = x.Url ?? "",
+                        codigo = x.Codigo
 
                     }).ToListAsync();
 

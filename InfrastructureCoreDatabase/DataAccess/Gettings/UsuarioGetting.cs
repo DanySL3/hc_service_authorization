@@ -100,9 +100,13 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                     Select(x => new ListarCargosEntity
                     {
                         cargo_id = x.Id,
+                        cargo_padre_id = x.CargoPadreId ?? 0,
                         nombre = x.Cargo1
 
                     }).ToListAsync();
+
+
+            datos = datos.OrderBy(x => x.cargo_padre_id).ToList();
 
             return datos;
         }

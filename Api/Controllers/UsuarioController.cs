@@ -39,7 +39,7 @@ namespace Api.Controllers
         {
             try
             {
-                int usuario_id = Convert.ToInt32(User.FindFirstValue("usuario_id"));
+                int usuario_id = Convert.ToInt32(User.FindFirstValue("usuarioId"));
 
                 var dataResponse = await usuarioApplication.registrarUsuario(objModel, usuario_id);
 
@@ -67,7 +67,7 @@ namespace Api.Controllers
         {
             try
             {
-                int usuario_modifica_id = Convert.ToInt32(User.FindFirstValue("usuario_id"));
+                int usuario_modifica_id = Convert.ToInt32(User.FindFirstValue("usuarioId"));
 
                 var dataResponse = await usuarioApplication.eliminarUsuario(usuario_id, usuario_modifica_id);
 
@@ -95,7 +95,7 @@ namespace Api.Controllers
         {
             try
             {
-                int usuario_id = Convert.ToInt32(User.FindFirstValue("usuario_id"));
+                int usuario_id = Convert.ToInt32(User.FindFirstValue("usuarioId"));
 
                 var dataResponse = await usuarioApplication.actualizarUsuario(objModel, usuario_id);
 
@@ -175,7 +175,7 @@ namespace Api.Controllers
         {
             try
             {
-                int usuario_modifica_id = Convert.ToInt32(User.FindFirstValue("usuario_id"));
+                int usuario_modifica_id = Convert.ToInt32(User.FindFirstValue("usuarioId"));
 
                 var dataResponse = await usuarioApplication.suspenderUsuario(usuario_modifica_id, usuario_id);
 
@@ -203,7 +203,7 @@ namespace Api.Controllers
         {
             try
             {
-                int usuario_modifica_id = Convert.ToInt32(User.FindFirstValue("usuario_id"));
+                int usuario_modifica_id = Convert.ToInt32(User.FindFirstValue("usuarioId"));
 
                 var dataResponse = await usuarioApplication.activarUsuario(usuario_modifica_id, usuario_id);
 
@@ -231,7 +231,7 @@ namespace Api.Controllers
         {
             try
             {
-                int usuario_modifica_id = Convert.ToInt32(User.FindFirstValue("usuario_id"));
+                int usuario_modifica_id = Convert.ToInt32(User.FindFirstValue("usuarioId"));
 
                 var dataResponse = await usuarioApplication.resetearContrasenia(usuario_modifica_id, usuario_id);
 
@@ -259,7 +259,7 @@ namespace Api.Controllers
         {
             try
             {
-                int usuario_id = Convert.ToInt32(User.FindFirstValue("usuario_id"));
+                int usuario_id = Convert.ToInt32(User.FindFirstValue("usuarioId"));
 
                 var dataResponse = await usuarioApplication.cambiarContrasenia(objModel, usuario_id);
 
@@ -288,7 +288,7 @@ namespace Api.Controllers
         {
             try
             {
-                int usuario_id = Convert.ToInt32(User.FindFirstValue("usuario_id"));
+                int usuario_id = Convert.ToInt32(User.FindFirstValue("usuarioId"));
 
                 var dataResponse = await usuarioApplication.registrarAccesos(objModel, usuario_id);
 
@@ -345,7 +345,7 @@ namespace Api.Controllers
         {
             try
             {
-                int usuario_modifica_id = Convert.ToInt32(User.FindFirstValue("usuario_id"));
+                int usuario_modifica_id = Convert.ToInt32(User.FindFirstValue("usuarioId"));
 
                 var dataResponse = await usuarioApplication.eliminarAccesos(sistema_id, perfil_id, usuario_id, usuario_modifica_id);
 

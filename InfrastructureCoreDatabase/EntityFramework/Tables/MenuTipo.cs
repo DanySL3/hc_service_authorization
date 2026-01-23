@@ -3,17 +3,13 @@ using System.Collections.Generic;
 
 namespace InfrastructureCoreDatabase.EntityFramework.Tables;
 
-public partial class Perfil
+public partial class MenuTipo
 {
     public int Id { get; set; }
 
-    public int? SistemaId { get; set; }
-
-    public string Perfil1 { get; set; } = null!;
+    public string Nombre { get; set; } = null!;
 
     public string? Descripcion { get; set; }
-
-    public int Codigo { get; set; }
 
     public bool? Isactive { get; set; }
 

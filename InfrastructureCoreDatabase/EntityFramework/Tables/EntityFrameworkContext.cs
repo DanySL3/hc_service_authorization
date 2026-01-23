@@ -33,6 +33,8 @@ public partial class EntityFrameworkContext : DbContext
 
     public virtual DbSet<MenuPerfil> MenuPerfils { get; set; }
 
+    public virtual DbSet<MenuTipo> MenuTipos { get; set; }
+
     public virtual DbSet<Perfil> Perfils { get; set; }
 
     public virtual DbSet<PerfilUsuario> PerfilUsuarios { get; set; }
@@ -109,6 +111,7 @@ public partial class EntityFrameworkContext : DbContext
             entity.Property(e => e.Cargo1)
                 .HasMaxLength(150)
                 .HasColumnName("cargo");
+            entity.Property(e => e.CargoPadreId).HasColumnName("cargo_padre_id");
             entity.Property(e => e.Createdat)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
@@ -116,7 +119,6 @@ public partial class EntityFrameworkContext : DbContext
             entity.Property(e => e.Descripcion)
                 .HasMaxLength(200)
                 .HasColumnName("descripcion");
-            entity.Property(e => e.GerenciaId).HasColumnName("gerencia_id");
             entity.Property(e => e.Isactive)
                 .HasDefaultValue(true)
                 .HasColumnName("isactive");
@@ -284,6 +286,33 @@ public partial class EntityFrameworkContext : DbContext
             entity.Property(e => e.Usermodifiedid).HasColumnName("usermodifiedid");
         });
 
+        modelBuilder.Entity<MenuTipo>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("menu_tipo_pkey");
+
+            entity.ToTable("menu_tipo");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Createdat)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("createdat");
+            entity.Property(e => e.Descripcion)
+                .HasMaxLength(200)
+                .HasColumnName("descripcion");
+            entity.Property(e => e.Isactive)
+                .HasDefaultValue(true)
+                .HasColumnName("isactive");
+            entity.Property(e => e.Nombre)
+                .HasMaxLength(100)
+                .HasColumnName("nombre");
+            entity.Property(e => e.Updatedat)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("updatedat");
+            entity.Property(e => e.Usercreatedid).HasColumnName("usercreatedid");
+            entity.Property(e => e.Usermodifiedid).HasColumnName("usermodifiedid");
+        });
+
         modelBuilder.Entity<Perfil>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("perfil_pkey");
@@ -305,6 +334,7 @@ public partial class EntityFrameworkContext : DbContext
             entity.Property(e => e.Perfil1)
                 .HasMaxLength(100)
                 .HasColumnName("perfil");
+            entity.Property(e => e.SistemaId).HasColumnName("sistema_id");
             entity.Property(e => e.Updatedat)
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("updatedat");

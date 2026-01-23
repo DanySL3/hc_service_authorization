@@ -9,6 +9,7 @@ namespace Domain.Entities.Usuario
     public class ListarCargosEntity
     {
         public int cargo_id { get; set; }
+        public int cargo_padre_id { get; set; }
         public string nombre { get; set; }
     }
 }

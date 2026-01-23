@@ -4,13 +4,6 @@ using Domain.Enums;
 using Domain.Interfaces.Getting;
 using InfrastructureCoreDatabase.EntityFramework.Tables;
 using Microsoft.EntityFrameworkCore;
-using SkiaSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InfrastructureCoreDatabase.DataAccess.Gettings
 {
@@ -40,7 +33,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
             //menus
 
             menus = await db.Menus
-                .Where(m => m.Isactive == true && m.SistemaId == sistema.sistema_id)
+                .Where(m => m.Isactive == true && m.SistemaId == sistema!.sistema_id)
                 .Join(db.MenuPerfils,
                     m => m.Id,
                     p => p.MenuId,
@@ -50,12 +43,12 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                 .Select(mp => new DatosMenusEntity
                 {
                     id = mp.m.Id,
-                    menu_padre_id = mp.m.MenuPadreId,
+                    menu_padre_id = mp.m.MenuPadreId ?? 0,
                     menu_tipo_id = mp.m.MenuTipoId,
                     menu = mp.m.Menu1 ?? "",
                     url = mp.m.Url ?? "",
                     icono = mp.m.Icon ?? "",
-                    orden = mp.m.Orden
+                    orden = mp.m.Orden ?? 0
                 }).ToListAsync();
             
 
@@ -79,7 +72,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                         (ab, b) => new DatosMenusExternoEntity
                         {
                             id = ab.a.Id,
-                            menu_padre_id = ab.a.MenuPadreId,
+                            menu_padre_id = ab.a.MenuPadreId ?? 0,
                             menu = ab.a.Menu1,
                             descripcion = "",
                             url = "",

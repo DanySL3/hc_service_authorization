@@ -32,6 +32,32 @@ namespace Api.Controllers
         }
 
         [HttpGet]
+        [Route("consultar-menus-externos")]
+
+        public async Task<IActionResult> ObtenerMenuExternos()
+        {
+            try
+            {
+                var dataResponse = await objMenuApplication.obtenerMenuExternos();
+
+                return StatusCode(200, dataResponse);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("/api/andessuiteidentity/consultar-menus-externos: [error] " + ex.Message);
+
+                if (lDevelopment)
+                {
+                    return StatusCode(500, objResponseApp.errorSimpleServidor("10098", MessageException.GetErrorByCode(10098, ex.Message)));
+                }
+                else
+                {
+                    return StatusCode(500, objResponseApp.errorSimpleServidor("10098", MessageException.GetErrorByCode(500)));
+                }
+            }
+        }
+
+        [HttpGet]
         [Route("consultar-menus-usuario")]
         [Authorize]
 
@@ -39,9 +65,9 @@ namespace Api.Controllers
         {
             try
             {
-                int perfil_id = Convert.ToInt32(User.FindFirstValue("perfil_id"));
+                int perfil_id = Convert.ToInt32(User.FindFirstValue("perfilId"));
 
-                int sistema_codigo = Convert.ToInt32(User.FindFirstValue("sistema_codigo"));
+                int sistema_codigo = Convert.ToInt32(User.FindFirstValue("sistemaCodigo"));
 
                 var dataResponse = await objMenuApplication.obtenerMenuUsuario(perfil_id, sistema_codigo);
 

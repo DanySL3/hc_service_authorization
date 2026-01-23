@@ -30,12 +30,12 @@ namespace Application.Usecases
         }
 
 
-        public async Task<DataResponse> listarPerfiles()
+        public async Task<DataResponse> listarPerfiles(int sistema_id)
         {
 
             //ejecución de petición
 
-            var datos = await perfilGettingInfrastructure.listarPerfiles();
+            var datos = await perfilGettingInfrastructure.listarPerfiles(sistema_id);
 
             if (datos.Count == 0)
                 return objResponseHelper.emptyResponse();
@@ -43,11 +43,11 @@ namespace Application.Usecases
             return objResponseHelper.successResponse(datos);
         }
 
-        public async Task<DataResponse> obtenerPerfilUsuario(int usuario_id, int sistema_codigo)
+        public async Task<DataResponse> obtenerPerfilUsuario(int usuario_id, int idSistema)
         {
             //ejecución de petición
 
-            var datos = await perfilGettingInfrastructure.obtenerPerfilUsuario(usuario_id, sistema_codigo);
+            var datos = await perfilGettingInfrastructure.obtenerPerfilUsuario(usuario_id, idSistema);
 
             if (datos.Count == 0)
                 return objResponseHelper.emptyResponse();
@@ -69,7 +69,7 @@ namespace Application.Usecases
 
             //ejecución de petición
 
-            var datos = await perfilInfrastructure.actualizarPerfil(objModel.perfil_id, objModel.perfil, objModel.descripcion, usuario_id);
+            var datos = await perfilInfrastructure.actualizarPerfil(objModel.perfil_id, objModel.perfil, objModel.descripcion, usuario_id, objModel.sistema_id);
 
             if (datos.Code == false)
                 return objResponseHelper.errorSimpleClient("2001", MessageException.GetErrorByCode(2001, datos.Message));
@@ -114,7 +114,7 @@ namespace Application.Usecases
 
             //ejecución de petición
 
-            var datos = await perfilInfrastructure.registrarPerfil(objModel.perfil, objModel.descripcion, usuario_id);
+            var datos = await perfilInfrastructure.registrarPerfil(objModel.perfil, objModel.descripcion, usuario_id, objModel.sistema_id);
 
             if (datos.Code == false)
                 return objResponseHelper.errorSimpleClient("2001", MessageException.GetErrorByCode(2001, datos.Message));

@@ -33,54 +33,22 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
 
         }
 
-        public async Task<List<DatosAgenciaEntity>> listarAgenciasUsuario(int usuario_id, int sistema_codigo)
+        public async Task<List<DatosAgenciaEntity>> listarAgenciasUsuario(int usuario_id, int sistema_id)
         {
             var agencias = new List<DatosAgenciaEntity>();
 
-            //sistema
-
-            var sistema = await db.Sistemas.
-                Where(x => x.Codigo == sistema_codigo).
-                Select(x => new DatosSistemaEntity
-                {
-                    sistema_id = x.Id
-
-                }).FirstOrDefaultAsync();
-
-            //agencias
-
-            var agenciasUsuario = await db.AgenciaUsuarios
-                .Where(x => x.UsuarioId == usuario_id && x.Isactive == true && x.AgenciaId == 0)
-                .FirstOrDefaultAsync();
-
-            if (agenciasUsuario != null)
-            {
-                agencias = await db.Agencia
-                    .Where(b => b.Isactive == true)
-                    .Select(b => new DatosAgenciaEntity
-                    {
-                        agencia_id = b.Id,
-                        nombre = b.Nombre.Trim(),
-                        esPrincipal = false
-                    })
-                    .ToListAsync();
-            }
-            else
-            {
-                agencias = await db.AgenciaUsuarios
-                    .Where(x => x.UsuarioId == usuario_id && x.Isactive == true)
-                    .Join(db.Agencia,
-                          a => a.AgenciaId,
-                          b => b.Id,
-                          (a, b) => new DatosAgenciaEntity
-                          {
-                              agencia_id = a.AgenciaId,
-                              nombre = b.Nombre.Trim(),
-                              esPrincipal = false
-                          })
-                    .ToListAsync();
-            }
-
+            agencias = await db.AgenciaUsuarios
+                .Where(x => x.UsuarioId == usuario_id && x.Isactive == true)
+                .Join(db.Agencia,
+                        a => a.AgenciaId,
+                        b => b.Id,
+                        (a, b) => new DatosAgenciaEntity
+                        {
+                            agencia_id = a.AgenciaId,
+                            nombre = b.Nombre.Trim(),
+                            esPrincipal = false
+                        })
+                .ToListAsync();
 
             return agencias;
         }

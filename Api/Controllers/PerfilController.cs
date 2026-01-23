@@ -32,18 +32,17 @@ namespace Api.Controllers
             lDevelopment = Convert.ToBoolean(httpContextAccessor.HttpContext?.Items["lDevelopment"]);
         }
 
+
         [HttpGet]
         [Route("listar-perfiles-usuario")]
 
-        public async Task<IActionResult> ObtenerPerfilUsuario()
+        public async Task<IActionResult> ObtenerPerfilUsuario([FromQuery] int idSistema)
         {
             try
             {
-                int usuario_id = Convert.ToInt32(User.FindFirstValue("usuario_id"));
+                int usuario_id = Convert.ToInt32(User.FindFirstValue("usuarioId"));
 
-                int sistema_codigo = Convert.ToInt32(User.FindFirstValue("sistema_codigo"));
-
-                var dataResponse = await objPerfilApplication.obtenerPerfilUsuario(usuario_id, sistema_codigo);
+                var dataResponse = await objPerfilApplication.obtenerPerfilUsuario(usuario_id, idSistema);
 
                 return StatusCode(200, dataResponse);
             }
@@ -98,7 +97,7 @@ namespace Api.Controllers
         {
             try
             {
-                int usuario_id = Convert.ToInt32(User.FindFirstValue("usuario_id"));
+                int usuario_id = Convert.ToInt32(User.FindFirstValue("usuarioId"));
 
                 var dataResponse = await objPerfilApplication.registrarPrivilegios(objModel, usuario_id);
 
@@ -123,11 +122,11 @@ namespace Api.Controllers
         [HttpGet]
         [Route("listar-perfiles")]
 
-        public async Task<IActionResult> listarPerfiles()
+        public async Task<IActionResult> listarPerfiles([FromQuery] int sistema_id)
         {
             try
             {
-                var dataResponse = await objPerfilApplication.listarPerfiles();
+                var dataResponse = await objPerfilApplication.listarPerfiles(sistema_id);
 
                 return StatusCode(200, dataResponse);
             }
@@ -155,7 +154,7 @@ namespace Api.Controllers
         {
             try
             {
-                int usuario_id = Convert.ToInt32(User.FindFirstValue("usuario_id"));
+                int usuario_id = Convert.ToInt32(User.FindFirstValue("usuarioId"));
 
                 var dataResponse = await objPerfilApplication.registrarPerfil(objModel, usuario_id);
 
@@ -183,7 +182,7 @@ namespace Api.Controllers
         {
             try
             {
-                int usuario_id = Convert.ToInt32(User.FindFirstValue("usuario_id"));
+                int usuario_id = Convert.ToInt32(User.FindFirstValue("usuarioId"));
 
                 var dataResponse = await objPerfilApplication.actualizarPerfil(objModel, usuario_id);
 
@@ -211,7 +210,7 @@ namespace Api.Controllers
         {
             try
             {
-                int usuario_id = Convert.ToInt32(User.FindFirstValue("usuario_id"));
+                int usuario_id = Convert.ToInt32(User.FindFirstValue("usuarioId"));
 
                 var dataResponse = await objPerfilApplication.eliminarPerfil(perfil_id, usuario_id);
 

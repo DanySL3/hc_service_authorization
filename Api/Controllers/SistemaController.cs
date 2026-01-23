@@ -37,7 +37,7 @@ namespace Api.Controllers
         {
             try
             {
-                int usuario_id = Convert.ToInt32(User.FindFirstValue("usuario_id"));
+                int usuario_id = Convert.ToInt32(User.FindFirstValue("usuarioId"));
 
                 var dataResponse = await objSistemaApplication.listarSistemasUsuario(usuario_id);
 

@@ -14,9 +14,9 @@ namespace Application.Interfaces.Externals
 
         public Task<DataResponse> eliminarPerfil(int perfil_id, int usuario_id);
 
-        public Task<DataResponse> listarPerfiles();
+        public Task<DataResponse> listarPerfiles(int sistema_id);
 
-        public Task<DataResponse> obtenerPerfilUsuario(int usuario_id, int sistema_codigo);
+        public Task<DataResponse> obtenerPerfilUsuario(int usuario_id, int idSistema);
 
         public Task<DataResponse> obtenerPerfilesFaltantes(int sistema_id, int usuario_id);
 

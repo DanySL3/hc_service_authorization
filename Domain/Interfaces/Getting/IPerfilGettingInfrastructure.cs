@@ -10,7 +10,7 @@ namespace Domain.Interfaces.Getting
     public interface IPerfilGettingInfrastructure
     {
 
-        public Task<List<DatosPerfilEntity>> listarPerfiles();
+        public Task<List<DatosPerfilEntity>> listarPerfiles(int sistema_id);
 
         public Task<List<DatosPerfilEntity>> obtenerPerfilUsuario(int usuario_id, int sistema_codigo);
 

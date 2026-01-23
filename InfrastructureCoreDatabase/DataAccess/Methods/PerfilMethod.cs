@@ -1,16 +1,9 @@
 ﻿using Domain.Entities;
 using Domain.Entities.Menu;
-using Domain.Interfaces;
 using Domain.Interfaces.Method;
 using InfrastructureCoreDatabase.EntityFramework.Tables;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Transactions;
 
 namespace InfrastructureCoreDatabase.DataAccess.Methods
@@ -24,7 +17,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Methods
             db = _db;
         }
 
-        public async Task<TransaccionEntity> actualizarPerfil(int perfil_id, string perfil, string descripcion, int usuario_id)
+        public async Task<TransaccionEntity> actualizarPerfil(int perfil_id, string perfil, string descripcion, int usuario_id, int? sistemaId)
         {
             using (var dbTransactionScope = new TransactionScope(TransactionScopeOption.Required,
                                                        new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))
@@ -36,6 +29,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Methods
                     if (perfilDB == null) return new TransaccionEntity { Code = false, ID = 0, Message = "no hay datos con el identificador de perfil" };
 
                     perfilDB.Perfil1 = perfil;
+                    perfilDB.SistemaId = sistemaId;
                     perfilDB.Descripcion = descripcion;
                     perfilDB.Usermodifiedid = usuario_id;
                     perfilDB.Updatedat = DateTime.Now;
@@ -101,7 +95,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Methods
             }
         }
 
-        public async Task<TransaccionEntity> registrarPerfil(string perfil, string descripcion, int usuario_id)
+        public async Task<TransaccionEntity> registrarPerfil(string perfil, string descripcion, int usuario_id, int? sistemaId)
         {
             using (var dbTransactionScope = new TransactionScope(TransactionScopeOption.Required,
                                                        new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))
@@ -111,6 +105,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Methods
                     var perfilDB = new Perfil();
 
                     perfilDB.Perfil1 = perfil;
+                    perfilDB.SistemaId = sistemaId;
                     perfilDB.Descripcion = descripcion;
                     perfilDB.Usercreatedid = usuario_id;
                     perfilDB.Codigo = db.Perfils.Max(x => x.Codigo) + 1;

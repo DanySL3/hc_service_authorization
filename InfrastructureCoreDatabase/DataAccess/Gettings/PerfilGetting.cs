@@ -5,11 +5,6 @@ using Domain.Enums;
 using Domain.Interfaces.Getting;
 using InfrastructureCoreDatabase.EntityFramework.Tables;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InfrastructureCoreDatabase.DataAccess.Gettings
 {
@@ -22,16 +17,17 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
             db = _db;
         }
 
-        public async Task<List<DatosPerfilEntity>> listarPerfiles()
+        public async Task<List<DatosPerfilEntity>> listarPerfiles(int sistema_id)
         {
             var perfiles = new List<DatosPerfilEntity>();
 
             perfiles = await db.Perfils.
-                Where(x => x.Isactive == true).
+                Where(x => x.Isactive == true && (x.SistemaId  == null || x.SistemaId == sistema_id)).
                 Select(x => new DatosPerfilEntity
                 {
                     perfil_id = x.Id,
                     perfil = x.Perfil1,
+                    descripcion = x.Descripcion ?? "",
                     codigo = x.Codigo,
                     esPrincipal = false
 
@@ -41,18 +37,8 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
             return perfiles;
         }
 
-        public async Task<List<DatosPerfilEntity>> obtenerPerfilUsuario(int usuario_id, int sistema_codigo)
+        public async Task<List<DatosPerfilEntity>> obtenerPerfilUsuario(int usuario_id, int idSistema)
         {
-            //sistema
-
-            var sistema = await db.Sistemas.
-                Where(x => x.Codigo == sistema_codigo).
-                Select(x => new DatosSistemaEntity
-                {
-                    sistema_id = x.Id
-
-                }).FirstOrDefaultAsync();
-
             //perfil
 
             var perfiles = new List<DatosPerfilEntity>();
@@ -63,7 +49,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                 .Where(u =>
                     u.UsuarioId == usuario_id &&
                     u.Isactive == true &&
-                    u.SistemaId == sistema.sistema_id &&
+                    u.SistemaId == idSistema &&
                     fecha >= u.FechaInicio &&
                     (u.FechaFin == null || fecha <= u.FechaFin)
                 )
@@ -75,6 +61,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                     {
                         perfil_id = p.Id,
                         perfil = p.Perfil1 ?? "",
+                        descripcion = p.Descripcion ?? "",
                         codigo = p.Codigo,
                         esPrincipal = false
                     })
@@ -95,18 +82,19 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                     a.id AS perfil_id,
                     a.perfil AS perfil,
                     a.codigo AS codigo,
-                   	FALSE AS esPrincipal
+                    '' AS descripcion,
+                    FALSE AS esPrincipal
                 FROM perfil a
                 LEFT JOIN perfil_usuario b
-                  ON a.id = b.perfil_id
-                 AND b.usuario_id = {usuario_id}
-                 AND b.sistema_id = {sistema_id}
-                 AND b.isactive = true
-                WHERE 
-                  b.id IS NULL
-                  OR now() < b.fecha_inicio
-                  OR now() > b.fecha_fin
-                  AND a.isactive = true
+                    ON a.id = b.perfil_id
+                    AND b.usuario_id = {usuario_id}
+                    AND b.sistema_id = {sistema_id}
+                    AND b.isactive = true
+                    AND (now() >= b.fecha_inicio AND (b.fecha_fin is null or now() <= b.fecha_fin))
+                WHERE
+                    b.id IS NULL
+                    AND a.isactive = true
+                    AND (a.sistema_id is null or a.sistema_id = {sistema_id})
                 
                 """).ToListAsync();
 

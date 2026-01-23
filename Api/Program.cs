@@ -62,7 +62,7 @@ builder.Services.AddMemoryCache();
 
 //Configuracion para el acceso a la base de datos
 
-builder.Services.AddApplicationServices(builder.Configuration, builder.Environment.IsProduction());
+builder.Services.AddApplicationServices(builder.Configuration, builder.Environment.IsStaging());
 
 //Capa de autenticacion
 
@@ -104,7 +104,7 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
-if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
+if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
 {
     app.UseSwagger();
     app.UseSwaggerUI(c =>
@@ -124,7 +124,7 @@ app.MapControllers();
 
 app.Use(async (context, next) =>
 {
-    context.Items["lDevelopment"] = builder.Environment.IsProduction();
+    context.Items["lDevelopment"] = builder.Environment.IsStaging();
 
     await next.Invoke();
 });
