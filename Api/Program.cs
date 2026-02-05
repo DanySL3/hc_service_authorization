@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using System.Text.Json.Serialization;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,8 +17,6 @@ builder.Services.AddControllers()
 
 
 builder.Services.AddEndpointsApiExplorer();
-
-builder.Services.AddHttpContextAccessor();
 
 //tokens en swagger
 
@@ -124,7 +121,7 @@ app.MapControllers();
 
 app.Use(async (context, next) =>
 {
-    context.Items["lDevelopment"] = builder.Environment.IsStaging();
+    context.Items["lDevelopment"] = builder.Environment.IsStaging() || builder.Environment.IsDevelopment();
 
     await next.Invoke();
 });

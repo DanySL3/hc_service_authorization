@@ -10,6 +10,9 @@ namespace Domain.Entities.Autenticacion
     {
         public int usuario_id { get; set; }
         public string nombre { get; set; }
+        public string documento_numero { get; set; }
+        public string correo { get; set; }
+        public string cargo { get; set; }
         public int sistema_id { get; set; }
         public string sistema { get; set; }
         public string fechaIniAcceso { get; set; }

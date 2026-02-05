@@ -119,12 +119,15 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                 SELECT
                     A.id as usuario_id,
                     A.nombre,
+                    A.documento_numero,
+                    A.correo,
+                    G.cargo,
                     C.id AS sistema_id,
                     C.nombre AS sistema,
-                    CAST(D.fecha_inicio AS CHAR(10)) AS fechaIniAcceso,
-                    COALESCE(CAST(D.fecha_fin AS CHAR(10)), 'Sin limite') AS fechaFinAcceso,
                     E.id AS perfil_id,
-                    E.perfil
+                    E.perfil,
+                    CAST(D.fecha_inicio AS CHAR(10)) AS fechaIniAcceso,
+                    COALESCE(CAST(D.fecha_fin AS CHAR(10)), 'Sin limite') AS fechaFinAcceso
                 FROM Usuario A
                 INNER JOIN sistema_usuario B ON
                     B.usuario_id = A.id
@@ -134,6 +137,8 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                 INNER JOIN Sistema C ON C.id = B.sistema_id
                 INNER JOIN perfil_usuario D ON D.sistema_id = B.sistema_id AND D.usuario_id = B.usuario_id AND D.isactive = true
                 INNER JOIN Perfil E ON E.id = D.perfil_id
+                INNER JOIN cargo_usuario F ON A.id = F.usuario_id
+                INNER JOIN cargo G on F.cargo_id = G.id
                 WHERE 
                     A.isactive = true
                    AND ({sistema_id} = 0 OR B.sistema_id = {sistema_id})
