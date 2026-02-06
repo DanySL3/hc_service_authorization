@@ -19,7 +19,7 @@ namespace Domain.Commons
                 int nLastPosition = 0;
                 List<string> lstConeccion = new List<string>
                     {
-                        "User=",
+                        "Username=",
                         "Password="
                     };
                 foreach (var item in lstConeccion)
