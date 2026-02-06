@@ -59,7 +59,7 @@ builder.Services.AddMemoryCache();
 
 //Configuracion para el acceso a la base de datos
 
-builder.Services.AddApplicationServices(builder.Configuration, builder.Environment.IsStaging());
+builder.Services.AddApplicationServices(builder.Configuration, builder.Environment.IsDevelopment());
 
 //Capa de autenticacion
 
