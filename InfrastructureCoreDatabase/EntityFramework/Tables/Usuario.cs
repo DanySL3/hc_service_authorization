@@ -5,6 +5,8 @@ namespace InfrastructureCoreDatabase.EntityFramework.Tables;
 
 public partial class Usuario
 {
+    public Guid Uuid { get; set; }
+
     public int Id { get; set; }
 
     public int? DocumentoTipoId { get; set; }
@@ -19,11 +21,9 @@ public partial class Usuario
 
     public string Contrasenia { get; set; } = null!;
 
-    public string Correo { get; set; } = null!;
+    public string? Correo { get; set; }
 
     public string? Foto { get; set; }
-
-    public bool? Esbloqueado { get; set; }
 
     public bool? Isactive { get; set; }
 

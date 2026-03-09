@@ -10,6 +10,8 @@ namespace Domain.Entities.Sistema
     {
         public int sistema_id { get; set; }
 
+        public Guid sistema_uuid { get; set; } = Guid.Empty;
+
         public string nombre { get; set; }
 
         public string icono { get; set; }

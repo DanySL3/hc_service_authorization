@@ -30,7 +30,7 @@ namespace Application.Interfaces.Externals
 
         public Task<DataResponse> listarCargos();
 
-        public Task<DataResponse> buscarUsuario(int usuario_id, string documento_numero);
+        public Task<DataResponse> buscarUsuario(int usuario_id, string documento_numero, string nombre);
 
         public Task<DataResponse> suspenderUsuario(int usuario_modifica_id, int usuario_id);
 

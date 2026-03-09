@@ -23,9 +23,7 @@ public partial class EntityFrameworkContext : DbContext
 
     public virtual DbSet<CargoUsuario> CargoUsuarios { get; set; }
 
-    public virtual DbSet<GerenciaUsuario> GerenciaUsuarios { get; set; }
-
-    public virtual DbSet<Gerencium> Gerencia { get; set; }
+    public virtual DbSet<DocumentoTipo> DocumentoTipos { get; set; }
 
     public virtual DbSet<Menu> Menus { get; set; }
 
@@ -51,11 +49,13 @@ public partial class EntityFrameworkContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.HasPostgresExtension("core", "postgres_fdw");
+
         modelBuilder.Entity<AgenciaUsuario>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("agencia_usuario_pkey");
 
-            entity.ToTable("agencia_usuario");
+            entity.ToTable("agencia_usuario", "core");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.AgenciaId).HasColumnName("agencia_id");
@@ -66,6 +66,7 @@ public partial class EntityFrameworkContext : DbContext
             entity.Property(e => e.Isactive)
                 .HasDefaultValue(true)
                 .HasColumnName("isactive");
+            entity.Property(e => e.SistemaId).HasColumnName("sistema_id");
             entity.Property(e => e.Updatedat)
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("updatedat");
@@ -78,7 +79,7 @@ public partial class EntityFrameworkContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("agencia_pkey");
 
-            entity.ToTable("agencia");
+            entity.ToTable("agencia", "core");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Createdat)
@@ -105,7 +106,7 @@ public partial class EntityFrameworkContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("cargo_pkey");
 
-            entity.ToTable("cargo");
+            entity.ToTable("cargo", "core");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Cargo1)
@@ -133,9 +134,10 @@ public partial class EntityFrameworkContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("cargo_usuario_pkey");
 
-            entity.ToTable("cargo_usuario");
+            entity.ToTable("cargo_usuario", "core");
 
             entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.AgenciaId).HasColumnName("agencia_id");
             entity.Property(e => e.CargoId).HasColumnName("cargo_id");
             entity.Property(e => e.Createdat)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
@@ -152,58 +154,39 @@ public partial class EntityFrameworkContext : DbContext
             entity.Property(e => e.UsuarioId).HasColumnName("usuario_id");
         });
 
-        modelBuilder.Entity<GerenciaUsuario>(entity =>
+        modelBuilder.Entity<DocumentoTipo>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("gerencia_usuario_pkey");
+            entity
+                .HasNoKey()
+                .ToTable("documento_tipo", "core_administracion");
 
-            entity.ToTable("gerencia_usuario");
-
+            entity.Property(e => e.CodigoSunat)
+                .HasMaxLength(5)
+                .HasColumnName("codigo_sunat");
+            entity.Property(e => e.CreatedAt)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("created_at");
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Createdat)
-                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+            entity.Property(e => e.IsActive).HasColumnName("is_active");
+            entity.Property(e => e.Nombre)
+                .HasMaxLength(200)
+                .HasColumnName("nombre");
+            entity.Property(e => e.NombreCorto)
+                .HasMaxLength(100)
+                .HasColumnName("nombre_corto");
+            entity.Property(e => e.PersonaTipoId).HasColumnName("persona_tipo_id");
+            entity.Property(e => e.UpdatedAt)
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("createdat");
-            entity.Property(e => e.GerenciaId).HasColumnName("gerencia_id");
-            entity.Property(e => e.Isactive)
-                .HasDefaultValue(true)
-                .HasColumnName("isactive");
-            entity.Property(e => e.Updatedat)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("updatedat");
-            entity.Property(e => e.Usercreatedid).HasColumnName("usercreatedid");
-            entity.Property(e => e.Usermodifiedid).HasColumnName("usermodifiedid");
-            entity.Property(e => e.UsuarioId).HasColumnName("usuario_id");
-        });
-
-        modelBuilder.Entity<Gerencium>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("gerencia_pkey");
-
-            entity.ToTable("gerencia");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Createdat)
-                .HasDefaultValueSql("CURRENT_TIMESTAMP")
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("createdat");
-            entity.Property(e => e.Gerencia)
-                .HasMaxLength(50)
-                .HasColumnName("gerencia");
-            entity.Property(e => e.Isactive)
-                .HasDefaultValue(true)
-                .HasColumnName("isactive");
-            entity.Property(e => e.Updatedat)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("updatedat");
-            entity.Property(e => e.Usercreatedid).HasColumnName("usercreatedid");
-            entity.Property(e => e.Usermodifiedid).HasColumnName("usermodifiedid");
+                .HasColumnName("updated_at");
+            entity.Property(e => e.UserCreatedUuid).HasColumnName("user_created_uuid");
+            entity.Property(e => e.UserModifiedUuid).HasColumnName("user_modified_uuid");
         });
 
         modelBuilder.Entity<Menu>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("menu_pkey");
 
-            entity.ToTable("menu");
+            entity.ToTable("menu", "core");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Createdat)
@@ -237,7 +220,7 @@ public partial class EntityFrameworkContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("menu_externo_pkey");
 
-            entity.ToTable("menu_externo");
+            entity.ToTable("menu_externo", "core");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Createdat)
@@ -267,7 +250,7 @@ public partial class EntityFrameworkContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("menu_perfil_pkey");
 
-            entity.ToTable("menu_perfil");
+            entity.ToTable("menu_perfil", "core");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Createdat)
@@ -288,39 +271,32 @@ public partial class EntityFrameworkContext : DbContext
 
         modelBuilder.Entity<MenuTipo>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("menu_tipo_pkey");
+            entity
+                .HasNoKey()
+                .ToTable("menu_tipo", "core_administracion");
 
-            entity.ToTable("menu_tipo");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Createdat)
-                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+            entity.Property(e => e.CreatedAt)
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("createdat");
-            entity.Property(e => e.Descripcion)
-                .HasMaxLength(200)
-                .HasColumnName("descripcion");
-            entity.Property(e => e.Isactive)
-                .HasDefaultValue(true)
-                .HasColumnName("isactive");
+                .HasColumnName("created_at");
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.IsActive).HasColumnName("is_active");
             entity.Property(e => e.Nombre)
                 .HasMaxLength(100)
                 .HasColumnName("nombre");
-            entity.Property(e => e.Updatedat)
+            entity.Property(e => e.UpdatedAt)
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("updatedat");
-            entity.Property(e => e.Usercreatedid).HasColumnName("usercreatedid");
-            entity.Property(e => e.Usermodifiedid).HasColumnName("usermodifiedid");
+                .HasColumnName("updated_at");
+            entity.Property(e => e.UserCreatedUuid).HasColumnName("user_created_uuid");
+            entity.Property(e => e.UserModifiedUuid).HasColumnName("user_modified_uuid");
         });
 
         modelBuilder.Entity<Perfil>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("perfil_pkey");
 
-            entity.ToTable("perfil");
+            entity.ToTable("perfil", "core");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Codigo).HasColumnName("codigo");
             entity.Property(e => e.Createdat)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
@@ -346,7 +322,7 @@ public partial class EntityFrameworkContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("perfil_usuario_pkey");
 
-            entity.ToTable("perfil_usuario");
+            entity.ToTable("perfil_usuario", "core");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Createdat)
@@ -370,12 +346,15 @@ public partial class EntityFrameworkContext : DbContext
 
         modelBuilder.Entity<Sistema>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("sistema_pkey");
+            entity.HasKey(e => e.Uuid).HasName("sistema_pkey");
 
-            entity.ToTable("sistema");
+            entity.ToTable("sistema", "core");
 
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Codigo).HasColumnName("codigo");
+            entity.HasIndex(e => e.Id, "sistema_id_key").IsUnique();
+
+            entity.Property(e => e.Uuid)
+                .HasDefaultValueSql("gen_random_uuid()")
+                .HasColumnName("uuid");
             entity.Property(e => e.Createdat)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
@@ -384,6 +363,10 @@ public partial class EntityFrameworkContext : DbContext
                 .HasMaxLength(200)
                 .HasColumnName("descripcion");
             entity.Property(e => e.Icon).HasColumnName("icon");
+            entity.Property(e => e.Id)
+                .ValueGeneratedOnAdd()
+                .UseIdentityAlwaysColumn()
+                .HasColumnName("id");
             entity.Property(e => e.Isactive)
                 .HasDefaultValue(true)
                 .HasColumnName("isactive");
@@ -404,7 +387,7 @@ public partial class EntityFrameworkContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("sistema_usuario_pkey");
 
-            entity.ToTable("sistema_usuario");
+            entity.ToTable("sistema_usuario", "core");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Createdat)
@@ -427,11 +410,15 @@ public partial class EntityFrameworkContext : DbContext
 
         modelBuilder.Entity<Usuario>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("usuario_pkey");
+            entity.HasKey(e => e.Uuid).HasName("usuario_pkey");
 
-            entity.ToTable("usuario");
+            entity.ToTable("usuario", "core");
 
-            entity.Property(e => e.Id).HasColumnName("id");
+            entity.HasIndex(e => e.Id, "usuario_id_key").IsUnique();
+
+            entity.Property(e => e.Uuid)
+                .HasDefaultValueSql("gen_random_uuid()")
+                .HasColumnName("uuid");
             entity.Property(e => e.Contrasenia)
                 .HasMaxLength(200)
                 .HasColumnName("contrasenia");
@@ -446,10 +433,11 @@ public partial class EntityFrameworkContext : DbContext
                 .HasMaxLength(20)
                 .HasColumnName("documento_numero");
             entity.Property(e => e.DocumentoTipoId).HasColumnName("documento_tipo_id");
-            entity.Property(e => e.Esbloqueado)
-                .HasDefaultValue(false)
-                .HasColumnName("esbloqueado");
             entity.Property(e => e.Foto).HasColumnName("foto");
+            entity.Property(e => e.Id)
+                .ValueGeneratedOnAdd()
+                .UseIdentityAlwaysColumn()
+                .HasColumnName("id");
             entity.Property(e => e.Isactive)
                 .HasDefaultValue(true)
                 .HasColumnName("isactive");
@@ -471,7 +459,7 @@ public partial class EntityFrameworkContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("usuario_estado_pkey");
 
-            entity.ToTable("usuario_estado");
+            entity.ToTable("usuario_estado", "core");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Createdat)
@@ -495,7 +483,7 @@ public partial class EntityFrameworkContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("variable_pkey");
 
-            entity.ToTable("variable");
+            entity.ToTable("variable", "core");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Createdat)

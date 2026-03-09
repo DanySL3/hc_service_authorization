@@ -12,7 +12,5 @@ namespace Application.Interfaces.Externals
         public Task<DataResponse> listarSistemas();
 
         public Task<DataResponse> listarSistemasUsuario(int usuario_id);
-
-        public Task<DataResponse> obtenerIdentiticador(int sistema_codigo);
     }
 }

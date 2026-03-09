@@ -235,13 +235,13 @@ namespace Application.Usecases
             return objResponseHelper.successResponse(datos);
         }
 
-        public async Task<DataResponse> buscarUsuario(int usuario_id, string documento_numero)
+        public async Task<DataResponse> buscarUsuario(int usuario_id, string documento_numero, string nombre)
         {
             //validación de campos
 
             var errores = new List<FieldResponse>();
 
-            if (usuario_id <= 0 && string.IsNullOrEmpty(documento_numero))
+            if (usuario_id <= 0 && string.IsNullOrEmpty(documento_numero) && string.IsNullOrEmpty(nombre))
                 errores.Add(new FieldResponse() { Code = "1010", Message = MessageException.GetErrorByCode(1010, "campos de búsqueda"), Field = "datos de entrada" });
 
             if (errores.Any())
@@ -249,9 +249,9 @@ namespace Application.Usecases
 
             //ejecución de petición
 
-            var datos = await objUsuarioGettingInfrastructure.buscarUsuario(usuario_id, documento_numero);
+            var datos = await objUsuarioGettingInfrastructure.buscarUsuario(usuario_id, documento_numero, nombre);
 
-            if (datos == null)
+            if (datos.Count == 0)
                 return objResponseHelper.emptyResponse();
 
             return objResponseHelper.successResponse(datos);

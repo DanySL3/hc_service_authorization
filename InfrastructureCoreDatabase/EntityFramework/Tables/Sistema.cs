@@ -5,6 +5,8 @@ namespace InfrastructureCoreDatabase.EntityFramework.Tables;
 
 public partial class Sistema
 {
+    public Guid Uuid { get; set; }
+
     public int Id { get; set; }
 
     public string Nombre { get; set; } = null!;
@@ -14,8 +16,6 @@ public partial class Sistema
     public string? Url { get; set; }
 
     public string Descripcion { get; set; } = null!;
-
-    public int Codigo { get; set; }
 
     public bool? Isactive { get; set; }
 

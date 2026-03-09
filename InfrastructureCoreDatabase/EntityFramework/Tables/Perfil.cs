@@ -13,8 +13,6 @@ public partial class Perfil
 
     public string? Descripcion { get; set; }
 
-    public int Codigo { get; set; }
-
     public bool? Isactive { get; set; }
 
     public int? Usercreatedid { get; set; }

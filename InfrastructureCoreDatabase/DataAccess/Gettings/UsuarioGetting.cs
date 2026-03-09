@@ -22,39 +22,53 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
             helper = _helper;
         }
 
-        public async Task<ConsultarDetalleUsuarioEntity> buscarUsuario(int usuario_id, string documento_numero)
+        public async Task<List<ConsultarDetalleUsuarioEntity>> buscarUsuario(int usuario_id, string documento_numero, string nombre)
         {
             //usuario
 
-            var usuario = await db.Usuarios
-                .Where(x => x.Isactive == true &&
-                            x.Id == (usuario_id == 0 ? x.Id : usuario_id) &&
-                            x.DocumentoNumero.ToUpper().Contains(documento_numero.ToUpper())).
-                Join(db.CargoUsuarios.Where(x => x.Isactive == true),
-                    a => a.Id,
-                    b => b.UsuarioId,
-                    (a, b) => new { a, b }
-                ).
-                Join(db.Cargos,
-                    ab => ab.b.CargoId,
+            var query = db.Usuarios
+                    .Where(u => u.Isactive == true);
+
+            if (usuario_id != 0)
+            {
+                query = query.Where(u => u.Id == usuario_id);
+            }
+
+            if (!string.IsNullOrWhiteSpace(documento_numero))
+            {
+                query = query.Where(u => u.DocumentoNumero!.ToUpper().Contains(documento_numero.ToUpper()));
+            }
+
+            if (!string.IsNullOrWhiteSpace(nombre))
+            {
+                query = query.Where(u => u.Nombre.ToUpper().Contains(nombre.ToUpper()));
+            }
+
+            var usuarios = await query
+                .Join(db.CargoUsuarios.Where(cu => cu.Isactive == true),
+                    u => u.Id,
+                    cu => cu.UsuarioId,
+                    (u, cu) => new { u, cu })
+                .Join(db.Cargos,
+                    temp => temp.cu.CargoId,
                     c => c.Id,
-                    (ab, c) => new { ab, c }
-                ).
-                Select(x => new ConsultarDetalleUsuarioEntity
+                    (temp, c) => new { temp.u, c })
+                .Select(x => new ConsultarDetalleUsuarioEntity
                 {
-                    usuario_id = x.ab.a.Id,
-                    usuario_estado_id = x.ab.a.UsuarioEstadoId,
-                    correo = x.ab.a.Correo,
+                    usuario_id = x.u.Id,
+                    usuario_estado_id = x.u.UsuarioEstadoId,
+                    correo = x.u.Correo == null ? "" : x.u.Correo,
                     cargo_id = x.c.Id,
                     cargo = x.c.Cargo1,
-                    nombre = x.ab.a.Nombre,
-                    usuario = x.ab.a.Usuario1,
-                    documento_numero = x.ab.a.DocumentoNumero,
-                    usuario_estado = x.ab.a.UsuarioEstadoId == 1 ? "Activo" : "Suspendido"
+                    nombre = x.u.Nombre,
+                    usuario = x.u.Usuario1,
+                    documento_numero = x.u.DocumentoNumero ?? "",
+                    usuario_estado = x.u.UsuarioEstadoId == 1 ? "Vigente" : 
+                                     x.u.UsuarioEstadoId == 2 ? "Suspendido" : "Bloqueado"
+                })
+                .ToListAsync();
 
-                }).FirstOrDefaultAsync();
-
-            if (usuario == null) return null;
+            if (usuarios == null) return null;
 
             //agencias
 
@@ -62,35 +76,38 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                  .Where(x => x.UsuarioId == usuario_id && x.Isactive == true && x.AgenciaId == 0)
                  .FirstOrDefaultAsync();
 
-            if (agenciasUsuario != null)
+            foreach (var usuario in usuarios)
             {
-                usuario.lstAgencias = await db.Agencia
-                    .Where(b => b.Isactive == true)
-                    .Select(b => new DatosAgenciaEntity
-                    {
-                        agencia_id = b.Id,
-                        nombre = b.Nombre.Trim(),
-                        esPrincipal = false
-                    })
-                    .ToListAsync();
-            }
-            else
-            {
-                usuario.lstAgencias = await db.AgenciaUsuarios
-                    .Where(x => x.UsuarioId == usuario_id && x.Isactive == true)
-                    .Join(db.Agencia,
-                          a => a.AgenciaId,
-                          b => b.Id,
-                          (a, b) => new DatosAgenciaEntity
-                          {
-                              agencia_id = a.AgenciaId,
-                              nombre = b.Nombre.Trim(),
-                              esPrincipal = false
-                          })
-                    .ToListAsync();
+                if (agenciasUsuario != null)
+                {
+                    usuario.lstAgencias = await db.Agencia
+                        .Where(b => b.Isactive == true)
+                        .Select(b => new DatosAgenciaEntity
+                        {
+                            agencia_id = b.Id,
+                            nombre = b.Nombre.Trim(),
+                            esPrincipal = false
+                        })
+                        .ToListAsync();
+                }
+                else
+                {
+                    usuario.lstAgencias = await db.AgenciaUsuarios
+                        .Where(x => x.UsuarioId == usuario_id && x.Isactive == true)
+                        .Join(db.Agencia,
+                              a => a.AgenciaId,
+                              b => b.Id,
+                              (a, b) => new DatosAgenciaEntity
+                              {
+                                  agencia_id = a.AgenciaId,
+                                  nombre = b.Nombre.Trim(),
+                                  esPrincipal = false
+                              })
+                        .ToListAsync();
+                }
             }
 
-            return usuario;
+            return usuarios;
         }
 
         public async Task<List<ListarCargosEntity>> listarCargos()
@@ -120,14 +137,14 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                     A.id as usuario_id,
                     A.nombre,
                     A.documento_numero,
-                    A.correo,
-                    G.cargo,
+                    COALESCE(CAST(A.correo AS CHAR(50)), '') AS correo,
+                    COALESCE(CAST(G.cargo AS CHAR(50)), '') AS cargo,
                     C.id AS sistema_id,
                     C.nombre AS sistema,
-                    E.id AS perfil_id,
-                    E.perfil,
-                    CAST(D.fecha_inicio AS CHAR(10)) AS fechaIniAcceso,
-                    COALESCE(CAST(D.fecha_fin AS CHAR(10)), 'Sin limite') AS fechaFinAcceso
+                    COALESCE(E.id, 0) AS perfil_id,
+                    COALESCE(E.perfil, '') AS perfil,
+                    COALESCE(CAST(D.fecha_inicio AS CHAR(10)), CAST(B.fecha_inicio AS CHAR(10))) AS fechaIniAcceso,
+                    COALESCE(CAST(D.fecha_fin AS CHAR(10)), 'Acceso total habilitado.') AS fechaFinAcceso
                 FROM Usuario A
                 INNER JOIN sistema_usuario B ON
                     B.usuario_id = A.id
@@ -135,10 +152,10 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                     AND CAST(NOW() AS DATE) >= CAST(B.fecha_inicio AS DATE)
                     AND (B.fecha_fin IS NULL OR CAST(NOW() AS DATE) <= CAST(B.fecha_fin AS DATE))
                 INNER JOIN Sistema C ON C.id = B.sistema_id
-                INNER JOIN perfil_usuario D ON D.sistema_id = B.sistema_id AND D.usuario_id = B.usuario_id AND D.isactive = true
-                INNER JOIN Perfil E ON E.id = D.perfil_id
-                INNER JOIN cargo_usuario F ON A.id = F.usuario_id
-                INNER JOIN cargo G on F.cargo_id = G.id
+                LEFT JOIN perfil_usuario D ON D.sistema_id = B.sistema_id AND D.usuario_id = B.usuario_id AND D.isactive = true
+                LEFT JOIN Perfil E ON E.id = D.perfil_id
+                LEFT JOIN cargo_usuario F ON A.id = F.usuario_id
+                LEFT JOIN cargo G on F.cargo_id = G.id
                 WHERE 
                     A.isactive = true
                    AND ({sistema_id} = 0 OR B.sistema_id = {sistema_id})

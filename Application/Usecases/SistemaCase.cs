@@ -49,17 +49,5 @@ namespace Application.Usecases
 
             return objResponseHelper.successResponse(datos);
         }
-
-        public async Task<DataResponse> obtenerIdentiticador(int sistema_codigo)
-        {
-            //ejecución de petición
-
-            var datos = await objSistemaGettingInfrastructure.obtenerIdentiticador(sistema_codigo);
-
-            if (datos == null)
-                return objResponseHelper.emptyResponse();
-
-            return objResponseHelper.successResponse(datos);
-        }
     }
 }

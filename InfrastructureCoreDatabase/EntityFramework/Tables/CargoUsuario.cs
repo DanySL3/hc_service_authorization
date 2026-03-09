@@ -11,6 +11,8 @@ public partial class CargoUsuario
 
     public int UsuarioId { get; set; }
 
+    public int? AgenciaId { get; set; }
+
     public bool? Isactive { get; set; }
 
     public int? Usercreatedid { get; set; }

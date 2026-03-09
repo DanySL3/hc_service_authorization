@@ -13,7 +13,5 @@ namespace Domain.Interfaces.Getting
         public Task<List<DatosAplicacionEntity>> listarSistemas();
 
         public Task<List<DatosAplicacionEntity>> listarSistemasUsuario(int usuario_id);
-
-        public Task<DatosSistemaEntity> obtenerIdentiticador(int sistema_codigo);
     }
 }

@@ -108,7 +108,6 @@ namespace InfrastructureCoreDatabase.DataAccess.Methods
                     perfilDB.SistemaId = sistemaId;
                     perfilDB.Descripcion = descripcion;
                     perfilDB.Usercreatedid = usuario_id;
-                    perfilDB.Codigo = db.Perfils.Max(x => x.Codigo) + 1;
 
                     db.Perfils.Add(perfilDB);
 

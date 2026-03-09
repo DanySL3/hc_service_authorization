@@ -67,9 +67,9 @@ namespace Api.Controllers
             {
                 int perfil_id = Convert.ToInt32(User.FindFirstValue("perfilId"));
 
-                int sistema_codigo = Convert.ToInt32(User.FindFirstValue("sistemaCodigo"));
+                int sistema_id = Convert.ToInt32(User.FindFirstValue("sistemaId"));
 
-                var dataResponse = await objMenuApplication.obtenerMenuUsuario(perfil_id, sistema_codigo);
+                var dataResponse = await objMenuApplication.obtenerMenuUsuario(perfil_id, sistema_id);
 
                 return StatusCode(200, dataResponse);
             }

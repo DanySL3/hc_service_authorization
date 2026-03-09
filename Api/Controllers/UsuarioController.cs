@@ -145,11 +145,11 @@ namespace Api.Controllers
         [HttpGet]
         [Route("buscar-usuarios")]
 
-        public async Task<IActionResult> buscarUsuario([FromQuery] int usuario_id = 0, [FromQuery] string documento_numero = "")
+        public async Task<IActionResult> buscarUsuario([FromQuery] int usuario_id = 0, [FromQuery] string documento_numero = "", [FromQuery] string nombre = "")
         {
             try
             {
-                var dataResponse = await usuarioApplication.buscarUsuario(usuario_id, documento_numero);
+                var dataResponse = await usuarioApplication.buscarUsuario(usuario_id, documento_numero, nombre);
 
                 return StatusCode(200, dataResponse);
             }

@@ -11,6 +11,8 @@ public partial class AgenciaUsuario
 
     public int AgenciaId { get; set; }
 
+    public int? SistemaId { get; set; }
+
     public bool? Isactive { get; set; }
 
     public int? Usercreatedid { get; set; }

@@ -16,24 +16,14 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
             db = _db;
         }
 
-        public async Task<List<DatosMenusEntity>> obtenerMenuUsuario(int perfil_id, int sistema_codigo)
+        public async Task<List<DatosMenusEntity>> obtenerMenuUsuario(int perfil_id, int sistema_id)
         {
             var menus = new List<DatosMenusEntity>();
-
-            //sistema
-
-            var sistema = await db.Sistemas.
-                Where(x => x.Codigo == sistema_codigo).
-                Select(x => new DatosSistemaEntity
-                {
-                    sistema_id = x.Id
-
-                }).FirstOrDefaultAsync();
 
             //menus
 
             menus = await db.Menus
-                .Where(m => m.Isactive == true && m.SistemaId == sistema!.sistema_id)
+                .Where(m => m.Isactive == true && m.SistemaId == sistema_id)
                 .Join(db.MenuPerfils,
                     m => m.Id,
                     p => p.MenuId,

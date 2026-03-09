@@ -1,7 +1,6 @@
 @echo off
 
-set DOTNET_TOOLS=%USERPROFILE%\.dotnet\tools
-
-PowerShell.exe -Command "%DOTNET_TOOLS%\dotnet-ef dbcontext scaffold 'Host=192.168.1.95;Port=5432;Database=db_identity;Username=HCUser_PS;Password=hc+2024;' Npgsql.EntityFrameworkCore.PostgreSQL -o EntityFramework/Tables -c EntityFrameworkContext --force"
+PowerShell.exe -Command "dotnet ef dbcontext scaffold 'Host=31.97.169.107;Port=5432;Database=db_identity;Username=HCUser_qa;Password=rT8$M!Z2@9xK#AqW7eLp;' Npgsql.EntityFrameworkCore.PostgreSQL -o EntityFramework/Tables -c EntityFrameworkContext --force"
 
 pause
+goto begin

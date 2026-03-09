@@ -28,7 +28,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                     perfil_id = x.Id,
                     perfil = x.Perfil1,
                     descripcion = x.Descripcion ?? "",
-                    codigo = x.Codigo,
+                    codigo = 0,
                     esPrincipal = false
 
                 }).ToListAsync();
@@ -37,7 +37,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
             return perfiles;
         }
 
-        public async Task<List<DatosPerfilEntity>> obtenerPerfilUsuario(int usuario_id, int idSistema)
+        public async Task<List<DatosPerfilEntity>> obtenerPerfilUsuario(int usuario_id, int sistema_id)
         {
             //perfil
 
@@ -49,7 +49,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                 .Where(u =>
                     u.UsuarioId == usuario_id &&
                     u.Isactive == true &&
-                    u.SistemaId == idSistema &&
+                    u.SistemaId == sistema_id &&
                     fecha >= u.FechaInicio &&
                     (u.FechaFin == null || fecha <= u.FechaFin)
                 )
@@ -62,7 +62,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                         perfil_id = p.Id,
                         perfil = p.Perfil1 ?? "",
                         descripcion = p.Descripcion ?? "",
-                        codigo = p.Codigo,
+                        codigo = 0,
                         esPrincipal = false
                     })
                 .ToListAsync();
@@ -81,7 +81,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                 SELECT
                     a.id AS perfil_id,
                     a.perfil AS perfil,
-                    a.codigo AS codigo,
+                    0 AS codigo,
                     '' AS descripcion,
                     FALSE AS esPrincipal
                 FROM perfil a

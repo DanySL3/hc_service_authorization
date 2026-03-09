@@ -12,7 +12,7 @@ namespace Domain.Interfaces.Getting
 {
     public interface IUsuarioGettingInfrastructure
     {
-        public Task<ConsultarDetalleUsuarioEntity> buscarUsuario(int usuario_id, string documento_numero);
+        public Task<List<ConsultarDetalleUsuarioEntity>> buscarUsuario(int usuario_id, string documento_numero, string nombre);
 
         public Task<List<ListarCargosEntity>> listarCargos();
 

@@ -21,11 +21,12 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
             var sistema = await db.Sistemas.
                     Select(x => new DatosAplicacionEntity
                     {
+                        sistema_uuid = x.Uuid,
                         sistema_id = x.Id,
                         nombre = x.Nombre,
-                        icono = x.Icon ?? "",
-                        url = x.Url ?? "",
-                        codigo = x.Codigo
+                        icono = "",
+                        url = "",
+                        codigo = 0
 
                     }).ToListAsync();
 
@@ -51,29 +52,17 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                 )
                 .Select(x => new DatosAplicacionEntity
                 {
+                    sistema_uuid = x.p.Uuid,
                     sistema_id = x.p.Id,
                     nombre = x.p.Nombre,
                     icono = x.p.Icon ?? "",
                     url = x.p.Url ?? "",
-                    codigo = x.p.Codigo
+                    codigo = 0
                 })
                 .ToListAsync();
                     
 
             return sistemas;
-        }
-
-        public async Task<DatosSistemaEntity> obtenerIdentiticador(int sistema_codigo)
-        {
-            var sistema = await db.Sistemas.
-                    Where(x => x.Codigo == sistema_codigo).
-                    Select(x => new DatosSistemaEntity
-                    {
-                        sistema_id = x.Id
-
-                    }).FirstOrDefaultAsync();
-
-            return sistema;
         }
     }
 }

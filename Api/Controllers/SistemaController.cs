@@ -84,31 +84,5 @@ namespace Api.Controllers
                 }
             }
         }
-
-        [HttpGet]
-        [Route("consultar-identificador")]
-
-        public async Task<IActionResult> obtenerIdentiticador([FromQuery] int sistema_codigo)
-        {
-            try
-            {
-                var dataResponse = await objSistemaApplication.obtenerIdentiticador(sistema_codigo);
-
-                return StatusCode(200, dataResponse);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError($"{HttpContext.Request.Path}: [error] {ex.Message}");
-
-                if (lDevelopment)
-                {
-                    return StatusCode(500, objResponseHelper.errorSimpleServidor("2000", MessageException.GetErrorByCode(2000, ex.Message)));
-                }
-                else
-                {
-                    return StatusCode(500, objResponseHelper.errorSimpleServidor("2000", MessageException.GetErrorByCode(500)));
-                }
-            }
-        }
     }
 }
