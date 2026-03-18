@@ -27,7 +27,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
             //usuario
 
             var query = db.Usuarios
-                    .Where(u => u.Isactive == true);
+                    .Where(u => u.IsActive == true);
 
             if (usuario_id != 0)
             {
@@ -45,7 +45,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
             }
 
             var usuarios = await query
-                .Join(db.CargoUsuarios.Where(cu => cu.Isactive == true),
+                .Join(db.CargoUsuarios.Where(cu => cu.IsActive == true),
                     u => u.Id,
                     cu => cu.UsuarioId,
                     (u, cu) => new { u, cu })
@@ -73,7 +73,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
             //agencias
 
             var agenciasUsuario = await db.AgenciaUsuarios
-                 .Where(x => x.UsuarioId == usuario_id && x.Isactive == true && x.AgenciaId == 0)
+                 .Where(x => x.UsuarioId == usuario_id && x.IsActive == true && x.AgenciaId == 0)
                  .FirstOrDefaultAsync();
 
             foreach (var usuario in usuarios)
@@ -81,7 +81,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                 if (agenciasUsuario != null)
                 {
                     usuario.lstAgencias = await db.Agencia
-                        .Where(b => b.Isactive == true)
+                        .Where(b => b.IsActive == true)
                         .Select(b => new DatosAgenciaEntity
                         {
                             agencia_id = b.Id,
@@ -93,7 +93,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                 else
                 {
                     usuario.lstAgencias = await db.AgenciaUsuarios
-                        .Where(x => x.UsuarioId == usuario_id && x.Isactive == true)
+                        .Where(x => x.UsuarioId == usuario_id && x.IsActive == true)
                         .Join(db.Agencia,
                               a => a.AgenciaId,
                               b => b.Id,
@@ -113,7 +113,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
         public async Task<List<ListarCargosEntity>> listarCargos()
         {
             var datos = await db.Cargos.
-                    Where(x => x.Isactive == true).
+                    Where(x => x.IsActive == true).
                     Select(x => new ListarCargosEntity
                     {
                         cargo_id = x.Id,
@@ -148,16 +148,16 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                 FROM Usuario A
                 INNER JOIN sistema_usuario B ON
                     B.usuario_id = A.id
-                    AND B.isactive = true
+                    AND B.is_active = true
                     AND CAST(NOW() AS DATE) >= CAST(B.fecha_inicio AS DATE)
                     AND (B.fecha_fin IS NULL OR CAST(NOW() AS DATE) <= CAST(B.fecha_fin AS DATE))
                 INNER JOIN Sistema C ON C.id = B.sistema_id
-                LEFT JOIN perfil_usuario D ON D.sistema_id = B.sistema_id AND D.usuario_id = B.usuario_id AND D.isactive = true
+                LEFT JOIN perfil_usuario D ON D.sistema_id = B.sistema_id AND D.usuario_id = B.usuario_id AND D.is_active = true
                 LEFT JOIN Perfil E ON E.id = D.perfil_id
                 LEFT JOIN cargo_usuario F ON A.id = F.usuario_id
                 LEFT JOIN cargo G on F.cargo_id = G.id
                 WHERE 
-                    A.isactive = true
+                    A.is_active = true
                    AND ({sistema_id} = 0 OR B.sistema_id = {sistema_id})
                    AND ({usuario_id} = 0 OR A.id = {usuario_id})
                    AND ({documento_numero} = '' OR A.documento_numero LIKE CONCAT('%' || {documento_numero} || '%'))
@@ -191,10 +191,10 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                 FROM usuario A
                 INNER JOIN cargo_usuario B
                     ON A.id = B.usuario_id
-                   AND B.isactive = true
+                   AND B.is_active = true
                 INNER JOIN cargo C
                     ON B.cargo_id = C.id
-                WHERE A.isactive = true
+                WHERE A.is_active = true
                 ORDER BY A.id desc
                 offset {index * cantidad} limit {cantidad}
                 

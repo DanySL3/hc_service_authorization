@@ -23,13 +23,13 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
             //menus
 
             menus = await db.Menus
-                .Where(m => m.Isactive == true && m.SistemaId == sistema_id)
+                .Where(m => m.IsActive == true && m.SistemaId == sistema_id)
                 .Join(db.MenuPerfils,
                     m => m.Id,
                     p => p.MenuId,
                     (m, p) => new { m, p }
                 )
-                .Where(mp => mp.p.PerfilId == perfil_id && mp.p.Isactive == true)
+                .Where(mp => mp.p.PerfilId == perfil_id && mp.p.IsActive == true)
                 .Select(mp => new DatosMenusEntity
                 {
                     id = mp.m.Id,
@@ -52,7 +52,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
             menus = await db.Menus
                     .Where(a => a.SistemaId == sistema_id)
                     .GroupJoin(
-                        db.MenuPerfils.Where(b => b.PerfilId == perfil_id && b.Isactive == true),
+                        db.MenuPerfils.Where(b => b.PerfilId == perfil_id && b.IsActive == true),
                         a => a.Id,
                         b => b.MenuId,
                         (a, b) => new { a, b }
@@ -88,7 +88,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
         private async Task<List<DatosMenusExternoEntity>> ObtenerMenusHijosExterno(int idMenuPadre)
         {
             var menus = await db.MenuExternos
-                            .Where(g => g.MenuPadreId == idMenuPadre && g.Isactive == true)
+                            .Where(g => g.MenuPadreId == idMenuPadre && g.IsActive == true)
                             .OrderBy(g => g.Orden)
                             .ToListAsync();
 

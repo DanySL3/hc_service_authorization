@@ -31,8 +31,8 @@ namespace InfrastructureCoreDatabase.DataAccess.Methods
                     perfilDB.Perfil1 = perfil;
                     perfilDB.SistemaId = sistemaId;
                     perfilDB.Descripcion = descripcion;
-                    perfilDB.Usermodifiedid = usuario_id;
-                    perfilDB.Updatedat = DateTime.Now;
+                    perfilDB.UserModifiedId = usuario_id;
+                    perfilDB.UpdatedAt = DateTime.Now;
 
                     db.SaveChanges();
 
@@ -64,16 +64,16 @@ namespace InfrastructureCoreDatabase.DataAccess.Methods
 
                     if (perfil == null) return new TransaccionEntity { Code = false, ID = 0, Message = "no hay datos con el identificador de perfil" };
 
-                    perfil.Isactive = false;
-                    perfil.Usermodifiedid = usuario_id;
-                    perfil.Updatedat = DateTime.Now;
+                    perfil.IsActive = false;
+                    perfil.UserModifiedId = usuario_id;
+                    perfil.UpdatedAt = DateTime.Now;
 
                     db.PerfilUsuarios
-                        .Where(a => a.Isactive == true && a.PerfilId == perfil_id)
+                        .Where(a => a.IsActive == true && a.PerfilId == perfil_id)
                         .ExecuteUpdate(setters => setters
-                            .SetProperty(p => p.Isactive, false)
-                            .SetProperty(p => p.Usermodifiedid, usuario_id)
-                            .SetProperty(p => p.Updatedat, DateTime.Now)
+                            .SetProperty(p => p.IsActive, false)
+                            .SetProperty(p => p.UserModifiedId, usuario_id)
+                            .SetProperty(p => p.UpdatedAt, DateTime.Now)
                         );
 
                     db.SaveChanges();
@@ -107,7 +107,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Methods
                     perfilDB.Perfil1 = perfil;
                     perfilDB.SistemaId = sistemaId;
                     perfilDB.Descripcion = descripcion;
-                    perfilDB.Usercreatedid = usuario_id;
+                    perfilDB.UserCreatedId = usuario_id;
 
                     db.Perfils.Add(perfilDB);
 
@@ -150,16 +150,16 @@ namespace InfrastructureCoreDatabase.DataAccess.Methods
 
                             if (perfilNuevo == null)
                             {
-                                perfilDB.Isactive = false;
+                                perfilDB.IsActive = false;
                             }
                             else
                             {
-                                perfilDB.Isactive = true;
+                                perfilDB.IsActive = true;
                                 lstMenus.Remove(perfilNuevo);
                             }
 
-                            perfilDB.Usermodifiedid = usuario_id;
-                            perfilDB.Updatedat = DateTime.Now;
+                            perfilDB.UserModifiedId = usuario_id;
+                            perfilDB.UpdatedAt = DateTime.Now;
                         }
 
                         var nuevosMenus = lstMenus
@@ -167,7 +167,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Methods
                             {
                                 MenuId = x.menu_id,
                                 PerfilId = perfil_id,
-                                Usercreatedid = usuario_id,
+                                UserCreatedId = usuario_id,
                             })
                             .ToList();
                         
@@ -177,11 +177,11 @@ namespace InfrastructureCoreDatabase.DataAccess.Methods
                     {
 
                         db.MenuPerfils
-                            .Where(p => p.Id == perfil_id && p.Isactive == true)
+                            .Where(p => p.Id == perfil_id && p.IsActive == true)
                             .ExecuteUpdate(setters => setters
-                                .SetProperty(p => p.Isactive, false)
-                                .SetProperty(p => p.Usermodifiedid, usuario_id)
-                                .SetProperty(p => p.Updatedat, DateTime.Now)
+                                .SetProperty(p => p.IsActive, false)
+                                .SetProperty(p => p.UserModifiedId, usuario_id)
+                                .SetProperty(p => p.UpdatedAt, DateTime.Now)
                             );
 
                     }

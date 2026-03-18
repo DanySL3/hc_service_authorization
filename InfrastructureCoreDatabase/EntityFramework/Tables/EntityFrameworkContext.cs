@@ -59,19 +59,19 @@ public partial class EntityFrameworkContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.AgenciaId).HasColumnName("agencia_id");
-            entity.Property(e => e.Createdat)
+            entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("createdat");
-            entity.Property(e => e.Isactive)
+                .HasColumnName("created_at");
+            entity.Property(e => e.IsActive)
                 .HasDefaultValue(true)
-                .HasColumnName("isactive");
+                .HasColumnName("is_active");
             entity.Property(e => e.SistemaId).HasColumnName("sistema_id");
-            entity.Property(e => e.Updatedat)
+            entity.Property(e => e.UpdatedAt)
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("updatedat");
-            entity.Property(e => e.Usercreatedid).HasColumnName("usercreatedid");
-            entity.Property(e => e.Usermodifiedid).HasColumnName("usermodifiedid");
+                .HasColumnName("updated_at");
+            entity.Property(e => e.UserCreatedId).HasColumnName("user_created_id");
+            entity.Property(e => e.UserModifiedId).HasColumnName("user_modified_id");
             entity.Property(e => e.UsuarioId).HasColumnName("usuario_id");
         });
 
@@ -82,24 +82,24 @@ public partial class EntityFrameworkContext : DbContext
             entity.ToTable("agencia", "core");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Createdat)
+            entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("createdat");
+                .HasColumnName("created_at");
             entity.Property(e => e.Descripcion)
                 .HasMaxLength(200)
                 .HasColumnName("descripcion");
-            entity.Property(e => e.Isactive)
+            entity.Property(e => e.IsActive)
                 .HasDefaultValue(true)
-                .HasColumnName("isactive");
+                .HasColumnName("is_active");
             entity.Property(e => e.Nombre)
                 .HasMaxLength(100)
                 .HasColumnName("nombre");
-            entity.Property(e => e.Updatedat)
+            entity.Property(e => e.UpdatedAt)
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("updatedat");
-            entity.Property(e => e.Usercreatedid).HasColumnName("usercreatedid");
-            entity.Property(e => e.Usermodifiedid).HasColumnName("usermodifiedid");
+                .HasColumnName("updated_at");
+            entity.Property(e => e.UserCreatedId).HasColumnName("user_created_id");
+            entity.Property(e => e.UserModifiedId).HasColumnName("user_modified_id");
         });
 
         modelBuilder.Entity<Cargo>(entity =>
@@ -113,21 +113,21 @@ public partial class EntityFrameworkContext : DbContext
                 .HasMaxLength(150)
                 .HasColumnName("cargo");
             entity.Property(e => e.CargoPadreId).HasColumnName("cargo_padre_id");
-            entity.Property(e => e.Createdat)
+            entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("createdat");
+                .HasColumnName("created_at");
             entity.Property(e => e.Descripcion)
                 .HasMaxLength(200)
                 .HasColumnName("descripcion");
-            entity.Property(e => e.Isactive)
+            entity.Property(e => e.IsActive)
                 .HasDefaultValue(true)
-                .HasColumnName("isactive");
-            entity.Property(e => e.Updatedat)
+                .HasColumnName("is_active");
+            entity.Property(e => e.UpdatedAt)
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("updatedat");
-            entity.Property(e => e.Usercreatedid).HasColumnName("usercreatedid");
-            entity.Property(e => e.Usermodifiedid).HasColumnName("usermodifiedid");
+                .HasColumnName("updated_at");
+            entity.Property(e => e.UserCreatedId).HasColumnName("user_created_id");
+            entity.Property(e => e.UserModifiedId).HasColumnName("user_modified_id");
         });
 
         modelBuilder.Entity<CargoUsuario>(entity =>
@@ -139,18 +139,18 @@ public partial class EntityFrameworkContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.AgenciaId).HasColumnName("agencia_id");
             entity.Property(e => e.CargoId).HasColumnName("cargo_id");
-            entity.Property(e => e.Createdat)
+            entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("createdat");
-            entity.Property(e => e.Isactive)
+                .HasColumnName("created_at");
+            entity.Property(e => e.IsActive)
                 .HasDefaultValue(true)
-                .HasColumnName("isactive");
-            entity.Property(e => e.Updatedat)
+                .HasColumnName("is_active");
+            entity.Property(e => e.UpdatedAt)
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("updatedat");
-            entity.Property(e => e.Usercreatedid).HasColumnName("usercreatedid");
-            entity.Property(e => e.Usermodifiedid).HasColumnName("usermodifiedid");
+                .HasColumnName("updated_at");
+            entity.Property(e => e.UserCreatedId).HasColumnName("user_created_id");
+            entity.Property(e => e.UserModifiedId).HasColumnName("user_modified_id");
             entity.Property(e => e.UsuarioId).HasColumnName("usuario_id");
         });
 
@@ -178,8 +178,8 @@ public partial class EntityFrameworkContext : DbContext
             entity.Property(e => e.UpdatedAt)
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("updated_at");
-            entity.Property(e => e.UserCreatedUuid).HasColumnName("user_created_uuid");
-            entity.Property(e => e.UserModifiedUuid).HasColumnName("user_modified_uuid");
+            entity.Property(e => e.UserCreatedId).HasColumnName("user_created_id");
+            entity.Property(e => e.UserModifiedId).HasColumnName("user_modified_id");
         });
 
         modelBuilder.Entity<Menu>(entity =>
@@ -189,16 +189,16 @@ public partial class EntityFrameworkContext : DbContext
             entity.ToTable("menu", "core");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Createdat)
+            entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("createdat");
+                .HasColumnName("created_at");
             entity.Property(e => e.Icon)
                 .HasMaxLength(200)
                 .HasColumnName("icon");
-            entity.Property(e => e.Isactive)
+            entity.Property(e => e.IsActive)
                 .HasDefaultValue(true)
-                .HasColumnName("isactive");
+                .HasColumnName("is_active");
             entity.Property(e => e.Menu1)
                 .HasMaxLength(200)
                 .HasColumnName("menu");
@@ -206,14 +206,14 @@ public partial class EntityFrameworkContext : DbContext
             entity.Property(e => e.MenuTipoId).HasColumnName("menu_tipo_id");
             entity.Property(e => e.Orden).HasColumnName("orden");
             entity.Property(e => e.SistemaId).HasColumnName("sistema_id");
-            entity.Property(e => e.Updatedat)
+            entity.Property(e => e.UpdatedAt)
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("updatedat");
+                .HasColumnName("updated_at");
             entity.Property(e => e.Url)
                 .HasMaxLength(400)
                 .HasColumnName("url");
-            entity.Property(e => e.Usercreatedid).HasColumnName("usercreatedid");
-            entity.Property(e => e.Usermodifiedid).HasColumnName("usermodifiedid");
+            entity.Property(e => e.UserCreatedId).HasColumnName("user_created_id");
+            entity.Property(e => e.UserModifiedId).HasColumnName("user_modified_id");
         });
 
         modelBuilder.Entity<MenuExterno>(entity =>
@@ -223,27 +223,27 @@ public partial class EntityFrameworkContext : DbContext
             entity.ToTable("menu_externo", "core");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Createdat)
+            entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("createdat");
+                .HasColumnName("created_at");
             entity.Property(e => e.Descripcion)
                 .HasMaxLength(250)
                 .HasColumnName("descripcion");
-            entity.Property(e => e.Isactive)
+            entity.Property(e => e.IsActive)
                 .HasDefaultValue(true)
-                .HasColumnName("isactive");
+                .HasColumnName("is_active");
             entity.Property(e => e.Menu)
                 .HasMaxLength(100)
                 .HasColumnName("menu");
             entity.Property(e => e.MenuPadreId).HasColumnName("menu_padre_id");
             entity.Property(e => e.Orden).HasColumnName("orden");
-            entity.Property(e => e.Updatedat)
+            entity.Property(e => e.UpdatedAt)
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("updatedat");
+                .HasColumnName("updated_at");
             entity.Property(e => e.Url).HasColumnName("url");
-            entity.Property(e => e.Usercreatedid).HasColumnName("usercreatedid");
-            entity.Property(e => e.Usermodifiedid).HasColumnName("usermodifiedid");
+            entity.Property(e => e.UserCreatedId).HasColumnName("user_created_id");
+            entity.Property(e => e.UserModifiedId).HasColumnName("user_modified_id");
         });
 
         modelBuilder.Entity<MenuPerfil>(entity =>
@@ -253,20 +253,20 @@ public partial class EntityFrameworkContext : DbContext
             entity.ToTable("menu_perfil", "core");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Createdat)
+            entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("createdat");
-            entity.Property(e => e.Isactive)
+                .HasColumnName("created_at");
+            entity.Property(e => e.IsActive)
                 .HasDefaultValue(true)
-                .HasColumnName("isactive");
+                .HasColumnName("is_active");
             entity.Property(e => e.MenuId).HasColumnName("menu_id");
             entity.Property(e => e.PerfilId).HasColumnName("perfil_id");
-            entity.Property(e => e.Updatedat)
+            entity.Property(e => e.UpdatedAt)
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("updatedat");
-            entity.Property(e => e.Usercreatedid).HasColumnName("usercreatedid");
-            entity.Property(e => e.Usermodifiedid).HasColumnName("usermodifiedid");
+                .HasColumnName("updated_at");
+            entity.Property(e => e.UserCreatedId).HasColumnName("user_created_id");
+            entity.Property(e => e.UserModifiedId).HasColumnName("user_modified_id");
         });
 
         modelBuilder.Entity<MenuTipo>(entity =>
@@ -286,8 +286,8 @@ public partial class EntityFrameworkContext : DbContext
             entity.Property(e => e.UpdatedAt)
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("updated_at");
-            entity.Property(e => e.UserCreatedUuid).HasColumnName("user_created_uuid");
-            entity.Property(e => e.UserModifiedUuid).HasColumnName("user_modified_uuid");
+            entity.Property(e => e.UserCreatedId).HasColumnName("user_created_id");
+            entity.Property(e => e.UserModifiedId).HasColumnName("user_modified_id");
         });
 
         modelBuilder.Entity<Perfil>(entity =>
@@ -297,25 +297,25 @@ public partial class EntityFrameworkContext : DbContext
             entity.ToTable("perfil", "core");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Createdat)
+            entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("createdat");
+                .HasColumnName("created_at");
             entity.Property(e => e.Descripcion)
                 .HasMaxLength(100)
                 .HasColumnName("descripcion");
-            entity.Property(e => e.Isactive)
+            entity.Property(e => e.IsActive)
                 .HasDefaultValue(true)
-                .HasColumnName("isactive");
+                .HasColumnName("is_active");
             entity.Property(e => e.Perfil1)
                 .HasMaxLength(100)
                 .HasColumnName("perfil");
             entity.Property(e => e.SistemaId).HasColumnName("sistema_id");
-            entity.Property(e => e.Updatedat)
+            entity.Property(e => e.UpdatedAt)
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("updatedat");
-            entity.Property(e => e.Usercreatedid).HasColumnName("usercreatedid");
-            entity.Property(e => e.Usermodifiedid).HasColumnName("usermodifiedid");
+                .HasColumnName("updated_at");
+            entity.Property(e => e.UserCreatedId).HasColumnName("user_created_id");
+            entity.Property(e => e.UserModifiedId).HasColumnName("user_modified_id");
         });
 
         modelBuilder.Entity<PerfilUsuario>(entity =>
@@ -325,22 +325,22 @@ public partial class EntityFrameworkContext : DbContext
             entity.ToTable("perfil_usuario", "core");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Createdat)
+            entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("createdat");
+                .HasColumnName("created_at");
             entity.Property(e => e.FechaFin).HasColumnName("fecha_fin");
             entity.Property(e => e.FechaInicio).HasColumnName("fecha_inicio");
-            entity.Property(e => e.Isactive)
+            entity.Property(e => e.IsActive)
                 .HasDefaultValue(true)
-                .HasColumnName("isactive");
+                .HasColumnName("is_active");
             entity.Property(e => e.PerfilId).HasColumnName("perfil_id");
             entity.Property(e => e.SistemaId).HasColumnName("sistema_id");
-            entity.Property(e => e.Updatedat)
+            entity.Property(e => e.UpdatedAt)
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("updatedat");
-            entity.Property(e => e.Usercreatedid).HasColumnName("usercreatedid");
-            entity.Property(e => e.Usermodifiedid).HasColumnName("usermodifiedid");
+                .HasColumnName("updated_at");
+            entity.Property(e => e.UserCreatedId).HasColumnName("user_created_id");
+            entity.Property(e => e.UserModifiedId).HasColumnName("user_modified_id");
             entity.Property(e => e.UsuarioId).HasColumnName("usuario_id");
         });
 
@@ -355,10 +355,10 @@ public partial class EntityFrameworkContext : DbContext
             entity.Property(e => e.Uuid)
                 .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("uuid");
-            entity.Property(e => e.Createdat)
+            entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("createdat");
+                .HasColumnName("created_at");
             entity.Property(e => e.Descripcion)
                 .HasMaxLength(200)
                 .HasColumnName("descripcion");
@@ -367,20 +367,20 @@ public partial class EntityFrameworkContext : DbContext
                 .ValueGeneratedOnAdd()
                 .UseIdentityAlwaysColumn()
                 .HasColumnName("id");
-            entity.Property(e => e.Isactive)
+            entity.Property(e => e.IsActive)
                 .HasDefaultValue(true)
-                .HasColumnName("isactive");
+                .HasColumnName("is_active");
             entity.Property(e => e.Nombre)
                 .HasMaxLength(100)
                 .HasColumnName("nombre");
-            entity.Property(e => e.Updatedat)
+            entity.Property(e => e.UpdatedAt)
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("updatedat");
+                .HasColumnName("updated_at");
             entity.Property(e => e.Url)
                 .HasMaxLength(200)
                 .HasColumnName("url");
-            entity.Property(e => e.Usercreatedid).HasColumnName("usercreatedid");
-            entity.Property(e => e.Usermodifiedid).HasColumnName("usermodifiedid");
+            entity.Property(e => e.UserCreatedId).HasColumnName("user_created_id");
+            entity.Property(e => e.UserModifiedId).HasColumnName("user_modified_id");
         });
 
         modelBuilder.Entity<SistemaUsuario>(entity =>
@@ -390,21 +390,21 @@ public partial class EntityFrameworkContext : DbContext
             entity.ToTable("sistema_usuario", "core");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Createdat)
+            entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("createdat");
+                .HasColumnName("created_at");
             entity.Property(e => e.FechaFin).HasColumnName("fecha_fin");
             entity.Property(e => e.FechaInicio).HasColumnName("fecha_inicio");
-            entity.Property(e => e.Isactive)
+            entity.Property(e => e.IsActive)
                 .HasDefaultValue(true)
-                .HasColumnName("isactive");
+                .HasColumnName("is_active");
             entity.Property(e => e.SistemaId).HasColumnName("sistema_id");
-            entity.Property(e => e.Updatedat)
+            entity.Property(e => e.UpdatedAt)
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("updatedat");
-            entity.Property(e => e.Usercreatedid).HasColumnName("usercreatedid");
-            entity.Property(e => e.Usermodifiedid).HasColumnName("usermodifiedid");
+                .HasColumnName("updated_at");
+            entity.Property(e => e.UserCreatedId).HasColumnName("user_created_id");
+            entity.Property(e => e.UserModifiedId).HasColumnName("user_modified_id");
             entity.Property(e => e.UsuarioId).HasColumnName("usuario_id");
         });
 
@@ -425,10 +425,10 @@ public partial class EntityFrameworkContext : DbContext
             entity.Property(e => e.Correo)
                 .HasMaxLength(150)
                 .HasColumnName("correo");
-            entity.Property(e => e.Createdat)
+            entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("createdat");
+                .HasColumnName("created_at");
             entity.Property(e => e.DocumentoNumero)
                 .HasMaxLength(20)
                 .HasColumnName("documento_numero");
@@ -438,17 +438,17 @@ public partial class EntityFrameworkContext : DbContext
                 .ValueGeneratedOnAdd()
                 .UseIdentityAlwaysColumn()
                 .HasColumnName("id");
-            entity.Property(e => e.Isactive)
+            entity.Property(e => e.IsActive)
                 .HasDefaultValue(true)
-                .HasColumnName("isactive");
+                .HasColumnName("is_active");
             entity.Property(e => e.Nombre)
                 .HasMaxLength(250)
                 .HasColumnName("nombre");
-            entity.Property(e => e.Updatedat)
+            entity.Property(e => e.UpdatedAt)
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("updatedat");
-            entity.Property(e => e.Usercreatedid).HasColumnName("usercreatedid");
-            entity.Property(e => e.Usermodifiedid).HasColumnName("usermodifiedid");
+                .HasColumnName("updated_at");
+            entity.Property(e => e.UserCreatedId).HasColumnName("user_created_id");
+            entity.Property(e => e.UserModifiedId).HasColumnName("user_modified_id");
             entity.Property(e => e.Usuario1)
                 .HasMaxLength(100)
                 .HasColumnName("usuario");
@@ -462,21 +462,21 @@ public partial class EntityFrameworkContext : DbContext
             entity.ToTable("usuario_estado", "core");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Createdat)
+            entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("createdat");
-            entity.Property(e => e.Isactive)
+                .HasColumnName("created_at");
+            entity.Property(e => e.IsActive)
                 .HasDefaultValue(true)
-                .HasColumnName("isactive");
+                .HasColumnName("is_active");
             entity.Property(e => e.Nombre)
                 .HasMaxLength(100)
                 .HasColumnName("nombre");
-            entity.Property(e => e.Updatedat)
+            entity.Property(e => e.UpdatedAt)
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("updatedat");
-            entity.Property(e => e.Usercreatedid).HasColumnName("usercreatedid");
-            entity.Property(e => e.Usermodifiedid).HasColumnName("usermodifiedid");
+                .HasColumnName("updated_at");
+            entity.Property(e => e.UserCreatedId).HasColumnName("user_created_id");
+            entity.Property(e => e.UserModifiedId).HasColumnName("user_modified_id");
         });
 
         modelBuilder.Entity<Variable>(entity =>
@@ -486,21 +486,21 @@ public partial class EntityFrameworkContext : DbContext
             entity.ToTable("variable", "core");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Createdat)
+            entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("createdat");
+                .HasColumnName("created_at");
             entity.Property(e => e.Descripcion)
                 .HasMaxLength(250)
                 .HasColumnName("descripcion");
-            entity.Property(e => e.Isactive)
+            entity.Property(e => e.IsActive)
                 .HasDefaultValue(true)
-                .HasColumnName("isactive");
-            entity.Property(e => e.Updatedat)
+                .HasColumnName("is_active");
+            entity.Property(e => e.UpdatedAt)
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("updatedat");
-            entity.Property(e => e.Usercreatedid).HasColumnName("usercreatedid");
-            entity.Property(e => e.Usermodifiedid).HasColumnName("usermodifiedid");
+                .HasColumnName("updated_at");
+            entity.Property(e => e.UserCreatedId).HasColumnName("user_created_id");
+            entity.Property(e => e.UserModifiedId).HasColumnName("user_modified_id");
             entity.Property(e => e.Valor).HasColumnName("valor");
             entity.Property(e => e.Variable1)
                 .HasMaxLength(50)

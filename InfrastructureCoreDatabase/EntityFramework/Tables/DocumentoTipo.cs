@@ -17,9 +17,9 @@ public partial class DocumentoTipo
 
     public bool? IsActive { get; set; }
 
-    public Guid UserCreatedUuid { get; set; }
+    public int UserCreatedId { get; set; }
 
-    public Guid? UserModifiedUuid { get; set; }
+    public int? UserModifiedId { get; set; }
 
     public DateTime? CreatedAt { get; set; }
 

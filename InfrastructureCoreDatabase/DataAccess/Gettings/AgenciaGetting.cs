@@ -20,7 +20,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
         public async Task<List<DatosAgenciaEntity>> listarAgencia()
         {
             var agencias = await db.Agencia
-                .Where(au => au.Isactive == true)
+                .Where(au => au.IsActive == true)
                 .Select(x => new DatosAgenciaEntity
                 {
                     agencia_id = x.Id,
@@ -38,7 +38,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
             var agencias = new List<DatosAgenciaEntity>();
 
             agencias = await db.AgenciaUsuarios
-                .Where(x => x.UsuarioId == usuario_id && x.Isactive == true)
+                .Where(x => x.UsuarioId == usuario_id && x.IsActive == true)
                 .Join(db.Agencia,
                         a => a.AgenciaId,
                         b => b.Id,

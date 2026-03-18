@@ -19,11 +19,11 @@ namespace InfrastructureCoreDatabase
                 }
                 else
                 {
-                    options.UseNpgsql(ConnectionCommon.CreateSqlConnection($"Host={Environment.GetEnvironmentVariable("DB_AUTHENTICATION_SERVER")};" +
-                                                                            $"Port={Environment.GetEnvironmentVariable("DB_AUTHENTICATION_POST")};" +
-                                                                            $"Database={Environment.GetEnvironmentVariable("DB_AUTHENTICATION_DATABASE")};" +
-                                                                            $"Username={Environment.GetEnvironmentVariable("DB_AUTHENTICATION_USER")};" +
-                                                                            $"Password={Environment.GetEnvironmentVariable("DB_AUTHENTICATION_PASSWD")};"));
+                    options.UseNpgsql(ConnectionCommon.CreateSqlConnection($"Host={Environment.GetEnvironmentVariable("DB_AUTHORIZATION_SERVER")};" +
+                                                                            $"Port={Environment.GetEnvironmentVariable("DB_AUTHORIZATION_PORT")};" +
+                                                                            $"Database={Environment.GetEnvironmentVariable("DB_AUTHORIZATION_DATABASE")};" +
+                                                                            $"Username={Environment.GetEnvironmentVariable("DB_AUTHORIZATION_USER")};" +
+                                                                            $"Password={Environment.GetEnvironmentVariable("DB_AUTHORIZATION_PASSWD")};"));
                 }
             });
             return services;

@@ -9,13 +9,13 @@ public partial class UsuarioEstado
 
     public string Nombre { get; set; } = null!;
 
-    public bool? Isactive { get; set; }
+    public bool? IsActive { get; set; }
 
-    public int? Usercreatedid { get; set; }
+    public int UserCreatedId { get; set; }
 
-    public int? Usermodifiedid { get; set; }
+    public int? UserModifiedId { get; set; }
 
-    public DateTime? Createdat { get; set; }
+    public DateTime? CreatedAt { get; set; }
 
-    public DateTime? Updatedat { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 }

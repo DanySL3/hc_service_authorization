@@ -50,25 +50,25 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                     usuarioDB.DocumentoNumero = documento_numero;
                     usuarioDB.Correo = correo;
                     usuarioDB.Usuario1 = usuario;
-                    usuarioDB.Usermodifiedid = usuario_modifica_id;
-                    usuarioDB.Updatedat = DateTime.Now;
+                    usuarioDB.UserModifiedId = usuario_modifica_id;
+                    usuarioDB.UpdatedAt = DateTime.Now;
 
                     //cargo
 
                     var cargo = db.CargoUsuarios.Where(x => x.UsuarioId == usuario_id).FirstOrDefault();
 
                     cargo.CargoId = cargo_id;
-                    cargo.Usermodifiedid = usuario_modifica_id;
-                    cargo.Updatedat = DateTime.Now;
+                    cargo.UserModifiedId = usuario_modifica_id;
+                    cargo.UpdatedAt = DateTime.Now;
 
                     //agencia
 
                     db.AgenciaUsuarios
-                       .Where(a => a.Isactive == true && a.UsuarioId == usuario_id)
+                       .Where(a => a.IsActive == true && a.UsuarioId == usuario_id)
                        .ExecuteUpdate(setters => setters
-                           .SetProperty(p => p.Isactive, false)
-                           .SetProperty(p => p.Usermodifiedid, usuario_modifica_id)
-                           .SetProperty(p => p.Updatedat, DateTime.Now)
+                           .SetProperty(p => p.IsActive, false)
+                           .SetProperty(p => p.UserModifiedId, usuario_modifica_id)
+                           .SetProperty(p => p.UpdatedAt, DateTime.Now)
                        );
 
                     foreach (var agencia_id in agencia_ids)
@@ -77,9 +77,9 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
 
                         if (agenciaUsuario != null)
                         {
-                            agenciaUsuario.Updatedat = DateTime.Now;
-                            agenciaUsuario.Usermodifiedid = usuario_modifica_id;
-                            agenciaUsuario.Isactive = true;
+                            agenciaUsuario.UpdatedAt = DateTime.Now;
+                            agenciaUsuario.UserModifiedId = usuario_modifica_id;
+                            agenciaUsuario.IsActive = true;
                         }
                         else
                         {
@@ -87,7 +87,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
 
                             agenciaADD.AgenciaId = agencia_id;
                             agenciaADD.UsuarioId = usuario_id;
-                            agenciaADD.Usercreatedid = usuario_modifica_id;
+                            agenciaADD.UserCreatedId = usuario_modifica_id;
 
                             db.AgenciaUsuarios.Add(agenciaADD);
                         }
@@ -127,8 +127,8 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                     {
                         
                         usuario.Contrasenia = password;
-                        usuario.Updatedat = DateTime.Now;
-                        usuario.Usermodifiedid = usuario_id;
+                        usuario.UpdatedAt = DateTime.Now;
+                        usuario.UserModifiedId = usuario_id;
 
                         db.SaveChanges();
 
@@ -165,9 +165,9 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
 
                     if (usuario == null) return new TransaccionEntity { Code = false, ID = 0, Message = "no hay datos con el identificador de usuario" };
 
-                    usuario.Isactive = false;
-                    usuario.Usermodifiedid = usuario_modifica_id;
-                    usuario.Updatedat = DateTime.Now;
+                    usuario.IsActive = false;
+                    usuario.UserModifiedId = usuario_modifica_id;
+                    usuario.UpdatedAt = DateTime.Now;
 
                     db.SaveChanges();
 
@@ -210,18 +210,18 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                             FechaFin = null,
                             FechaInicio = DateOnly.FromDateTime(DateTime.Now),
                             UsuarioId = usuario_id,
-                            Usercreatedid = usuario_modifica_id
+                            UserCreatedId = usuario_modifica_id
                         };
 
                         db.SistemaUsuarios.Add(sistema);
                     }
                     else
                     {
-                        sistemaAsignado.Usermodifiedid = usuario_modifica_id;
-                        sistemaAsignado.Updatedat = DateTime.Now;
+                        sistemaAsignado.UserModifiedId = usuario_modifica_id;
+                        sistemaAsignado.UpdatedAt = DateTime.Now;
                         sistemaAsignado.FechaFin = null;
                         sistemaAsignado.FechaInicio = DateOnly.FromDateTime(DateTime.Now);
-                        sistemaAsignado.Isactive = true;
+                        sistemaAsignado.IsActive = true;
                     }
 
                     //perfil
@@ -239,7 +239,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                             FechaFin = string.IsNullOrEmpty(fecha_fin_perfil) ? null : DateOnly.ParseExact(fecha_fin_perfil, "yyyy-MM-dd"),
                             FechaInicio = string.IsNullOrEmpty(fecha_inicio_perfil) ? DateOnly.FromDateTime(DateTime.Now) : DateOnly.ParseExact(fecha_inicio_perfil, "yyyy-MM-dd"),
                             UsuarioId = usuario_id,
-                            Usercreatedid = usuario_modifica_id
+                            UserCreatedId = usuario_modifica_id
                         };
 
                         db.PerfilUsuarios.Add(perfiles);
@@ -247,12 +247,12 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                     }
                     else
                     {
-                        perfilAsignado.Usermodifiedid = usuario_modifica_id;
+                        perfilAsignado.UserModifiedId = usuario_modifica_id;
                         perfilAsignado.PerfilId = perfil_id;
-                        perfilAsignado.Updatedat = DateTime.Now;
+                        perfilAsignado.UpdatedAt = DateTime.Now;
                         perfilAsignado.FechaInicio = string.IsNullOrEmpty(fecha_inicio_perfil) ? DateOnly.FromDateTime(DateTime.Now) : DateOnly.ParseExact(fecha_inicio_perfil, "yyyy-MM-dd");
                         perfilAsignado.FechaFin = string.IsNullOrEmpty(fecha_fin_perfil) ? null : DateOnly.ParseExact(fecha_fin_perfil, "yyyy-MM-dd");
-                        perfilAsignado.Isactive = true;
+                        perfilAsignado.IsActive = true;
                     }
                     
 
@@ -296,7 +296,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                     usuarioDB.Usuario1 = usuario;
                     usuarioDB.Nombre = nombre;
                     usuarioDB.Contrasenia = password;
-                    usuarioDB.Usercreatedid = usuario_id;
+                    usuarioDB.UserCreatedId = usuario_id;
 
                     db.Usuarios.Add(usuarioDB);
 
@@ -308,7 +308,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
 
                     cargo.CargoId = cargo_id;
                     cargo.UsuarioId = usuarioDB.Id;
-                    cargo.Usercreatedid = usuario_id;
+                    cargo.UserCreatedId = usuario_id;
 
                     db.CargoUsuarios.Add(cargo);
 
@@ -318,7 +318,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                     {
                         UsuarioId = usuarioDB.Id,
                         AgenciaId = id,
-                        Usercreatedid = usuario_id
+                        UserCreatedId = usuario_id
 
                     }).ToList();
 
@@ -355,8 +355,8 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                     if (usuario == null) return new TransaccionEntity { Code = false, ID = 0, Message = "no hay datos con el identificador de usuario" };
 
                     usuario.Contrasenia = objHelperCommon.hashPassword(usuario.DocumentoNumero);
-                    usuario.Usermodifiedid = usuario_modifica_id;
-                    usuario.Updatedat = DateTime.Now;
+                    usuario.UserModifiedId = usuario_modifica_id;
+                    usuario.UpdatedAt = DateTime.Now;
 
                     db.SaveChanges();
 
@@ -389,8 +389,8 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                     if (usuario == null) return new TransaccionEntity { Code = false, ID = 0, Message = "no hay datos con el identificador de usuario" };
 
                     usuario.UsuarioEstadoId = (int)usuarioEstadoEnum.suspendido;
-                    usuario.Usermodifiedid = usuario_modifica_id;
-                    usuario.Updatedat = DateTime.Now;
+                    usuario.UserModifiedId = usuario_modifica_id;
+                    usuario.UpdatedAt = DateTime.Now;
 
                     db.SaveChanges();
 
@@ -423,8 +423,8 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                     if (usuario == null) return new TransaccionEntity { Code = false, ID = 0, Message = "no hay datos con el identificador de usuario" };
 
                     usuario.UsuarioEstadoId = (int)usuarioEstadoEnum.vigente;
-                    usuario.Usermodifiedid = usuario_idModifica;
-                    usuario.Updatedat = DateTime.Now;
+                    usuario.UserModifiedId = usuario_idModifica;
+                    usuario.UpdatedAt = DateTime.Now;
 
                     db.SaveChanges();
 
@@ -462,9 +462,9 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
 
                         if (sistemaUsuario == null) return new TransaccionEntity { Code = false, ID = 0, Message = "el privilegio a eliminar no existe" };
 
-                        sistemaUsuario.Isactive = false;
-                        sistemaUsuario.Usermodifiedid = usuario_idModifica;
-                        sistemaUsuario.Updatedat = DateTime.Now;
+                        sistemaUsuario.IsActive = false;
+                        sistemaUsuario.UserModifiedId = usuario_idModifica;
+                        sistemaUsuario.UpdatedAt = DateTime.Now;
 
                     }
                     else
@@ -473,9 +473,9 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
 
                         if (perfilUsuario == null) return new TransaccionEntity { Code = false, ID = 0, Message = "el privilegio a eliminar no existe" };
 
-                        perfilUsuario.Isactive = false;
-                        perfilUsuario.Usermodifiedid = usuario_idModifica;
-                        perfilUsuario.Updatedat = DateTime.Now;
+                        perfilUsuario.IsActive = false;
+                        perfilUsuario.UserModifiedId = usuario_idModifica;
+                        perfilUsuario.UpdatedAt = DateTime.Now;
                     }
 
                     db.SaveChanges();

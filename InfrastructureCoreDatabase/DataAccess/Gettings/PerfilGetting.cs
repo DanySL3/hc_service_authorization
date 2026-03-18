@@ -22,7 +22,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
             var perfiles = new List<DatosPerfilEntity>();
 
             perfiles = await db.Perfils.
-                Where(x => x.Isactive == true && (x.SistemaId  == null || x.SistemaId == sistema_id)).
+                Where(x => x.IsActive == true && (x.SistemaId  == null || x.SistemaId == sistema_id)).
                 Select(x => new DatosPerfilEntity
                 {
                     perfil_id = x.Id,
@@ -48,7 +48,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
             perfiles = await db.PerfilUsuarios
                 .Where(u =>
                     u.UsuarioId == usuario_id &&
-                    u.Isactive == true &&
+                    u.IsActive == true &&
                     u.SistemaId == sistema_id &&
                     fecha >= u.FechaInicio &&
                     (u.FechaFin == null || fecha <= u.FechaFin)
@@ -89,11 +89,11 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                     ON a.id = b.perfil_id
                     AND b.usuario_id = {usuario_id}
                     AND b.sistema_id = {sistema_id}
-                    AND b.isactive = true
+                    AND b.is_active = true
                     AND (now() >= b.fecha_inicio AND (b.fecha_fin is null or now() <= b.fecha_fin))
                 WHERE
                     b.id IS NULL
-                    AND a.isactive = true
+                    AND a.is_active = true
                     AND (a.sistema_id is null or a.sistema_id = {sistema_id})
                 
                 """).ToListAsync();

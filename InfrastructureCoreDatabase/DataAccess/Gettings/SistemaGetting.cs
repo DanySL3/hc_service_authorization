@@ -38,7 +38,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
             var fecha = DateOnly.FromDateTime(DateTime.Now);
 
             var sistemas = await db.SistemaUsuarios
-                .Where(u => u.UsuarioId == usuario_id && u.Isactive == true)
+                .Where(u => u.UsuarioId == usuario_id && u.IsActive == true)
                 .Join(
                     db.Sistemas,
                     pu => pu.SistemaId,
@@ -46,7 +46,7 @@ namespace InfrastructureCoreDatabase.DataAccess.Gettings
                     (pu, p) => new { pu, p }
                 )
                 .Where(x =>
-                    x.p.Isactive == true &&
+                    x.p.IsActive == true &&
                     fecha >= x.pu.FechaInicio &&
                     (x.pu.FechaFin == null || fecha <= x.pu.FechaFin)
                 )
